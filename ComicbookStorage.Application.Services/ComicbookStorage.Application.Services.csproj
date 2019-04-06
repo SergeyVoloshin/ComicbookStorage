@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComicbookStorage.Application.DTOs\ComicbookStorage.Application.DTOs.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ComicbookStorage.Domain.Services\ComicbookStorage.Domain.Services.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Tasks\ComicbookStorage.Infrastructure.Tasks.csproj" PrivateAssets="All"/>
+  </ItemGroup>
+
+</Project>
