@@ -23,9 +23,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\TileGrid\Tile.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ComicbookStorage.Application.DTOs\ComicbookStorage.Application.DTOs.csproj" />
     <ProjectReference Include="..\ComicbookStorage.Application.Services\ComicbookStorage.Application.Services.csproj" />
     <ProjectReference Include="..\ComicbookStorage.Infrastructure.DI\ComicbookStorage.Infrastructure.DI.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\actions\" />
+    <Folder Include="ClientApp\src\constants\" />
+    <Folder Include="ClientApp\src\containers\" />
+    <Folder Include="ClientApp\src\middleware\" />
+    <Folder Include="ClientApp\src\reducers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\TileGrid\Tile.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
