@@ -3,7 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { getComicbooks } from '../store/comicbookList/actions';
 import { ApplicationState } from '../store/configureStore';
-import TileGrid from '../components/TileGrid/TileGrid';
+import TileGrid from '../components/TileGrid';
 import { ComicbookListActionTypes } from '../store/comicbookList/types'
 
 type ComicbookListProps = ReturnType<typeof mapStateToProps> &
@@ -39,7 +39,7 @@ const mapStateToProps = (state: ApplicationState) => {
     return { comicbookListState: state.comicbookList }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<ComicbookListActionTypes>) => bindActionCreators(
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
     {
         requestComicbookList: getComicbooks,
     },

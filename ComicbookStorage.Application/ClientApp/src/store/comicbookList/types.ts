@@ -8,7 +8,6 @@
 
 export interface ComicbookListState {
     comicbooks: ComicbookListItem[]
-    isFetching: boolean
 }
 
 export const COMICBOOK_LIST_REQUEST = 'COMICBOOK_LIST_REQUEST';

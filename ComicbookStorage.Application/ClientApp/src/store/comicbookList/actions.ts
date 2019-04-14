@@ -1,6 +1,7 @@
 ﻿import fetch from 'cross-fetch'
 import { Dispatch } from 'redux'
 import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes } from './types'
+import { setProgressBar } from "../commonUi/actions"
 
 
 export function requestComicbookList(): ComicbookListActionTypes {
@@ -17,21 +18,22 @@ export function receiveComicbookList(json: any): ComicbookListActionTypes {
         description: serverItem.name,
     }))
 
-    console.log(transformedList);
     return {
         type: COMICBOOK_LIST_RESPONSE,
         comicbooks: transformedList
     }
 }
 
-export const getComicbooks = () => async (dispatch: Dispatch): Promise<ComicbookListActionTypes> => {
-    dispatch(requestComicbookList())
+export const getComicbooks = () => (dispatch: Dispatch): Promise<void> => {
+    dispatch(setProgressBar(true))
     return fetch('/api/comicbook')
         .then(
             response => response.json(),
             error => console.log('An error occurred.', error)
         )
-        .then(json =>
-            dispatch(receiveComicbookList(json))
+        .then(json => {
+                dispatch(setProgressBar(false));
+                dispatch(receiveComicbookList(json))
+            }
         );
 }

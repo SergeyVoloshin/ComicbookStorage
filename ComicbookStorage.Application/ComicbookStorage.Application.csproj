@@ -23,11 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\components\TileGrid\Tile.js" />
+    <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
+    <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <None Remove="ClientApp\src\store\comicbookList\actions.ts" />
     <None Remove="ClientApp\src\store\comicbookList\reducer.ts" />
     <None Remove="ClientApp\src\store\comicbookList\types.ts" />
+    <None Remove="ClientApp\src\store\commonUi\actions.ts" />
+    <None Remove="ClientApp\src\store\commonUi\reducer.ts" />
+    <None Remove="ClientApp\src\store\commonUi\types.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,10 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\commonUi\actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\commonUi\reducer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\commonUi\types.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

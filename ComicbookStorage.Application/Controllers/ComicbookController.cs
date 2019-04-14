@@ -22,6 +22,7 @@ namespace ComicbookStorage.Controllers
         [HttpGet]
         public async Task<IEnumerable<ComicbookListDto>> GetComicbooks()
         {
+            await Task.Delay(5000);
             return await comicbookService.GetAllAsync();
         }
     }
