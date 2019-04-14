@@ -24,6 +24,10 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\components\TileGrid\Tile.js" />
+    <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
+    <None Remove="ClientApp\src\store\comicbookList\actions.ts" />
+    <None Remove="ClientApp\src\store\comicbookList\reducer.ts" />
+    <None Remove="ClientApp\src\store\comicbookList\types.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,15 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\actions\" />
-    <Folder Include="ClientApp\src\constants\" />
-    <Folder Include="ClientApp\src\containers\" />
-    <Folder Include="ClientApp\src\middleware\" />
-    <Folder Include="ClientApp\src\reducers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\TileGrid\Tile.js" />
+    <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\store\comicbookList\actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\comicbookList\reducer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\comicbookList\types.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

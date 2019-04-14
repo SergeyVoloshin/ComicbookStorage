@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Counter from './components/Counter';
 import FetchData from './components/FetchData';
 import TileGrid from './components/TileGrid/TileGrid';
+import ComicbookList from './containers/ComicbookList';
 
 const Tiles1 = [
     { id: 1, url: '#', imageUrl: 'https://pp.userapi.com/c636128/v636128479/8c8f/pO9xQ4t8HCA.jpg?ava=1', title: 'test comicbook title 1', description: 'Some comicbook description 1' },
@@ -25,7 +26,7 @@ export default () => (
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
-        <Route path='/comicbooks' component={TileGrid} />
+        <Route path='/comicbooks' component={ComicbookList} />
         <Route exact path={"/test"} component={() => <TileGrid tiles={Tiles1}/>} />
 
     </Layout>
