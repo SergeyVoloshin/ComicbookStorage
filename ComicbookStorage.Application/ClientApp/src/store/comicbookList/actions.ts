@@ -1,6 +1,7 @@
 ﻿import fetch from 'cross-fetch'
-import { Dispatch  } from 'redux'
+import { Dispatch } from 'redux'
 import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes } from './types'
+
 
 export function requestComicbookList(): ComicbookListActionTypes {
     return {
@@ -23,7 +24,7 @@ export function receiveComicbookList(json: any): ComicbookListActionTypes {
     }
 }
 
-export const getComicbooks = () => async (dispatch: Dispatch<ComicbookListActionTypes>): Promise<ComicbookListActionTypes> => {
+export const getComicbooks = () => async (dispatch: Dispatch): Promise<ComicbookListActionTypes> => {
     dispatch(requestComicbookList())
     return fetch('/api/comicbook')
         .then(
