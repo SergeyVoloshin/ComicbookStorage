@@ -6,6 +6,11 @@
     description: string,
 }
 
+export interface ComicbookListItemDto {
+    id: number,
+    name: string,
+}
+
 export interface ComicbookListState {
     comicbooks: ComicbookListItem[]
 }

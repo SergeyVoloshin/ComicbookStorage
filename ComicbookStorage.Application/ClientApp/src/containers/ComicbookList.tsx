@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { getComicbooks } from '../store/comicbookList/actions';
+import { receiveComicbookListAsync } from '../store/comicbookList/thunks';
 import { ApplicationState } from '../store/configureStore';
 import TileGrid from '../components/TileGrid';
 import { ComicbookListActionTypes } from '../store/comicbookList/types'
@@ -39,9 +39,9 @@ const mapStateToProps = (state: ApplicationState) => {
     return { comicbookListState: state.comicbookList }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
+const mapDispatchToProps = (dispatch: Dispatch<ComicbookListActionTypes>) => bindActionCreators(
     {
-        requestComicbookList: getComicbooks,
+        requestComicbookList: receiveComicbookListAsync,
     },
     dispatch
 );

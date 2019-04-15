@@ -1,7 +1,4 @@
-﻿import fetch from 'cross-fetch'
-import { Dispatch } from 'redux'
-import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes } from './types'
-import { setProgressBar } from "../commonUi/actions"
+﻿import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes, ComicbookListItemDto } from './types'
 
 
 export function requestComicbookList(): ComicbookListActionTypes {
@@ -10,30 +7,16 @@ export function requestComicbookList(): ComicbookListActionTypes {
     }
 }
 
-export function receiveComicbookList(json: any): ComicbookListActionTypes {
-    let transformedList: ComicbookListItem[] = json.map((serverItem: any): ComicbookListItem => ({
+export function receiveComicbookList(json: ComicbookListItemDto[]): ComicbookListActionTypes {
+    let transformedList: ComicbookListItem[] = json.map((serverItem: ComicbookListItemDto): ComicbookListItem => ({
         id: serverItem.id,
         title: serverItem.name,
         coverUrl: 'https://pp.userapi.com/c636128/v636128479/8c8f/pO9xQ4t8HCA.jpg?ava=1',
         description: serverItem.name,
-    }))
+    }));
 
     return {
         type: COMICBOOK_LIST_RESPONSE,
         comicbooks: transformedList
     }
-}
-
-export const getComicbooks = () => (dispatch: Dispatch): Promise<void> => {
-    dispatch(setProgressBar(true))
-    return fetch('/api/comicbook')
-        .then(
-            response => response.json(),
-            error => console.log('An error occurred.', error)
-        )
-        .then(json => {
-                dispatch(setProgressBar(false));
-                dispatch(receiveComicbookList(json))
-            }
-        );
 }
