@@ -1,4 +1,4 @@
-﻿import { ComicbookListState, ComicbookListActionTypes, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE } from './types'
+﻿import { ComicbookListState, ComicbookListActionTypes, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE } from './types';
 
 const initialState: ComicbookListState = {
     comicbooks: [],

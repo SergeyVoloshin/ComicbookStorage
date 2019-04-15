@@ -1,4 +1,4 @@
-﻿import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes, ComicbookListItemDto } from './types'
+﻿import { ComicbookListItem, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE, ComicbookListActionTypes, ComicbookListItemDto } from './types';
 
 
 export function requestComicbookList(): ComicbookListActionTypes {

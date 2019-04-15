@@ -1,6 +1,6 @@
-﻿import fetch from 'cross-fetch'
-import { store } from '..'
-import { setProgressBar } from '../store/commonUi/actions'
+﻿import fetch from 'cross-fetch';
+import { store } from '..';
+import { setProgressBar } from '../store/commonUi/actions';
 
 class ComicbookServer {
     get<T>(url: string): Promise<T> {

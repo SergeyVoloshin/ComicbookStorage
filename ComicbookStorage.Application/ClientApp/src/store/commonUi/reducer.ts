@@ -1,4 +1,4 @@
-﻿import { CommonUiState, CommonUiActionTypes, SET_PROGRESS_BAR } from './types'
+﻿import { CommonUiState, CommonUiActionTypes, SET_PROGRESS_BAR } from './types';
 
 const initialState: CommonUiState = {
     isInProgress: false,
