@@ -1,7 +1,7 @@
 ﻿
 namespace ComicbookStorage.Domain.Services
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using Base;
     using Core.Entities;
@@ -10,7 +10,7 @@ namespace ComicbookStorage.Domain.Services
 
     public interface IComicbookManager : IManager
     {
-        Task<IEnumerable<Comicbook>> GetAllAsync();
+        Task<(bool hasMore, ReadOnlyCollection<Comicbook> comicbooks)> GetPage(uint pageNumber, uint pageSize);
     }
 
     public class ComicbookManager : ManagerBase, IComicbookManager
@@ -22,9 +22,9 @@ namespace ComicbookStorage.Domain.Services
             this.comicbookRepository = comicbookRepository;
         }
 
-        public Task<IEnumerable<Comicbook>> GetAllAsync()
+        public Task<(bool hasMore, ReadOnlyCollection<Comicbook> comicbooks)> GetPage(uint pageNumber, uint pageSize)
         {
-            return comicbookRepository.GetAllAsync();
+            return comicbookRepository.GetPageAsync(pageNumber, pageSize);
         }
     }
 }

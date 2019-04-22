@@ -1,32 +1,35 @@
 ﻿
 namespace ComicbookStorage.Application.Services
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using AutoMapper;
     using Base;
     using ComicbookStorage.Domain.Services;
-    using Domain.Core.Entities;
-    using Infrastructure.Tasks;
     using DTOs.Comicbook;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Configuration;
 
     public interface IComicbookService : IService
     {
-        Task<IEnumerable<ComicbookListDto>> GetAllAsync();
+        Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize);
     }
 
     public class ComicbookService : ServiceBase, IComicbookService
     {
+        private readonly IPathConfiguration pathConfig;
         private readonly IComicbookManager comicbookManager;
 
-        public ComicbookService(IComicbookManager comicbookManager, IMapper mapper) : base(mapper)
+        public ComicbookService(IPathConfiguration pathConfig, IComicbookManager comicbookManager, IMapper mapper) : base(mapper)
         {
+            this.pathConfig = pathConfig;
             this.comicbookManager = comicbookManager;
         }
 
-        public Task<IEnumerable<ComicbookListDto>> GetAllAsync()
+        public async Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize)
         {
-            return comicbookManager.GetAllAsync().Transform(r => Mapper.Map<IEnumerable<Comicbook>, IEnumerable<ComicbookListDto>>(r));
+            var (hasMore, comicbooks) = await comicbookManager.GetPage(pageNumber, pageSize);
+            var mappedComicbooks = comicbooks.Select(c => Mapper.Map(c, new ComicbookListItemDto($"{pathConfig.ComicbookImages}{c.SeoUrl}/cover.jpg")));
+            return new ComicbookListPageDto(hasMore, mappedComicbooks);
         }
     }
 }

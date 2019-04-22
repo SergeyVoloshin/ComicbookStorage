@@ -1,7 +1,8 @@
-﻿import { ComicbookListState, ComicbookListActionTypes, COMICBOOK_LIST_REQUEST, COMICBOOK_LIST_RESPONSE } from './types';
+﻿import { ComicbookListState, ComicbookListActionTypes, COMICBOOK_LIST_RESPONSE } from './types';
 
 const initialState: ComicbookListState = {
     comicbooks: [],
+    hasMore: true,
 }
 
 export function comicbookListReducer(
@@ -11,9 +12,9 @@ export function comicbookListReducer(
     switch (action.type) {
         case COMICBOOK_LIST_RESPONSE:
             return Object.assign({}, state, {
-                comicbooks: action.comicbooks
+                comicbooks: [...state.comicbooks, ...action.comicbooks],
+                hasMore: action.hasMore,
             });
-        case COMICBOOK_LIST_REQUEST:
         default:
             return state;
     }

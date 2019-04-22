@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190406071541_InitialCreate")]
+    [Migration("20190421061008_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,24 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CoverExtension")
+                        .IsRequired()
+                        .HasMaxLength(4);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("SeoUrl")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("SeoUrl");
 
                     b.ToTable("Comicbook");
                 });

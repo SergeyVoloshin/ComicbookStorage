@@ -5,13 +5,21 @@ namespace ComicbookStorage.Domain.Core.Entities
 
     public class Comicbook : IAggregateRoot
     {
-        public Comicbook(string name)
+        public Comicbook(string name, string description, string coverExtension)
         {
             Name = name;
+            Description = description;
+            CoverExtension = coverExtension;
         }
 
         public int Id { get; private set; }
 
         public string Name { get; private set; }
+
+        public string Description { get; private set; }
+
+        public string CoverExtension { get; private set; }
+
+        public string SeoUrl { get; private set; }
     }
 }

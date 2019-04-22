@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComicbookStorage.Application.DTOs\ComicbookStorage.Application.DTOs.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\ComicbookStorage.Domain.Services\ComicbookStorage.Domain.Services.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Tasks\ComicbookStorage.Infrastructure.Tasks.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ComicbookStorage.Application.DTOs\ComicbookStorage.Application.DTOs.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ComicbookStorage.Domain.Services\ComicbookStorage.Domain.Services.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Tasks\ComicbookStorage.Infrastructure.Tasks.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 import { requestComicbookListAsync } from '../store/comicbookList/thunks';
 import { ApplicationState } from '../store/configureStore';
 import TileGrid from '../components/TileGrid';
-import { ComicbookListActionTypes } from '../store/comicbookList/types';
 
 type ComicbookListProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps>;
@@ -13,10 +13,6 @@ export class ComicbookList extends Component<ComicbookListProps> {
 
     constructor(props: ComicbookListProps) {
         super(props);
-    }
-
-    componentDidMount() {
-        this.props.requestComicbookList();
     }
 
     render() {
@@ -30,16 +26,24 @@ export class ComicbookList extends Component<ComicbookListProps> {
 
         return (
             <div>
-                <TileGrid tiles={tiles} />
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this.props.requestComicbookList}
+                    hasMore={this.props.comicbookListState.hasMore}
+                    loader={<div key={0}>Loading ...</div>}
+                    useWindow={true}
+                >
+                    <TileGrid tiles={tiles} />
+                </InfiniteScroll>
             </div>);
     }
 }
 
 const mapStateToProps = (state: ApplicationState) => {
-    return { comicbookListState: state.comicbookList }
+    return { comicbookListState: state.comicbookList, }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<ComicbookListActionTypes>) => bindActionCreators(
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
     {
         requestComicbookList: requestComicbookListAsync,
     },

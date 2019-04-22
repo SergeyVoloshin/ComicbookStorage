@@ -1,27 +1,27 @@
 ﻿
 namespace ComicbookStorage.Domain.DataAccess.Repositories.Base
 {
-    using System;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using Core.Entities.Base;
     using LinqSpecs;
 
-    public interface IRepository<T> where T : IAggregateRoot
+    public interface IRepository<TEntity> where TEntity : IAggregateRoot
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetAsync(int id);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
-        Task<IEnumerable<T>> GetAllAsync(Specification<T> specification);
-        Task<T> GetAsync(Specification<T> specification);
-        Task<int> GetIdAsync(Specification<T> specification);
-        Task<int> CountAsync(Specification<T> specification);
-        Task<bool> ExistsAsync(Specification<T> specification);
+        Task<ReadOnlyCollection<TEntity>> GetAllAsync();
+        Task<TEntity> GetAsync(int id);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
+        Task<ReadOnlyCollection<TEntity>> GetAllAsync(Specification<TEntity> specification);
+        Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(Specification<TEntity> specification, uint pageNumber, uint pageSize);
+        Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(uint pageNumber, uint pageSize);
+        Task<TEntity> GetAsync(Specification<TEntity> specification);
+        Task<int> GetIdAsync(Specification<TEntity> specification);
+        Task<int> CountAsync(Specification<TEntity> specification);
+        Task<bool> ExistsAsync(Specification<TEntity> specification);
         Task<bool> ExistsAsync(int id);
-        Task<T> GetAggregateAsync(Specification<T> specification);
-        Task<T> GetAggregateAsync(int id);
-        Task<IEnumerable<T>> GetAggregatesAsync(Specification<T> specification);
+        Task<TEntity> GetAggregateAsync(Specification<TEntity> specification);
+        Task<TEntity> GetAggregateAsync(int id);
     }
 }

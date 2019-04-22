@@ -10,7 +10,8 @@ namespace ComicbookStorage.Application.Services.MappingProfiles
     {
         public ComicbookProfile()
         {
-            CreateMap<Comicbook, ComicbookListDto>();
+            CreateMap<Comicbook, ComicbookListItemDto>()
+                .ForMember(dest => dest.CoverUrl, opt => opt.Ignore());
         }
     }
 }

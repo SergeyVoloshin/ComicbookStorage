@@ -3,6 +3,7 @@ namespace ComicbookStorage.Infrastructure.DI
 {
     using System.Reflection;
     using Application.Services;
+    using Application.Services.Configuration;
     using AutoMapper;
     using Domain.DataAccess;
     using Domain.Services;
@@ -39,6 +40,10 @@ namespace ComicbookStorage.Infrastructure.DI
                 .AsPublicImplementedInterfaces();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            PathConfiguration pathConfiguration = new PathConfiguration();
+            configuration.GetSection("PathConfiguration").Bind(pathConfiguration);
+            services.AddSingleton<IPathConfiguration>(pathConfiguration);
 
             services.AddDbContext<ComicbookStorageContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }

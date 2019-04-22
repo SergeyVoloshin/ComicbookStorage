@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComicbookStorage.Domain.Core\ComicbookStorage.Domain.Core.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\ComicbookStorage.Domain.DataAccess\ComicbookStorage.Domain.DataAccess.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Tasks\ComicbookStorage.Infrastructure.Tasks.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ComicbookStorage.Domain.Core\ComicbookStorage.Domain.Core.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ComicbookStorage.Domain.DataAccess\ComicbookStorage.Domain.DataAccess.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Tasks\ComicbookStorage.Infrastructure.Tasks.csproj" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

@@ -19,7 +19,7 @@ export class ProgressBar extends Component<ProgressBarProps> {
     render() {
 
         if (this.props.uiState.isInProgress) {
-            return (<TopBarProgress />)
+            return (<TopBarProgress />);
         } else {
             return ('');
         }

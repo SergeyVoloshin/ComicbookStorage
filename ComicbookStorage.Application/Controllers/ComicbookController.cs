@@ -19,11 +19,11 @@ namespace ComicbookStorage.Controllers
             this.comicbookService = comicbookService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<ComicbookListDto>> GetComicbooks()
+        [HttpGet("{pageNumber}/{pageSize}/")]
+        public async Task<ComicbookListPageDto> GetComicbooks(uint pageNumber, uint pageSize)
         {
-            await Task.Delay(5000);
-            return await comicbookService.GetAllAsync();
+
+            return await comicbookService.GetPage(pageNumber, pageSize);
         }
     }
 }

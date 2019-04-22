@@ -9,12 +9,24 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
     {
         public void Configure(EntityTypeBuilder<Comicbook> builder)
         {
-            builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id).ValueGeneratedOnAdd();
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id).ValueGeneratedOnAdd();
 
-            builder.Property(t => t.Name)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255);
+
+            builder.Property(e => e.CoverExtension)
+                .IsRequired()
+                .HasMaxLength(4);
+
+            builder.HasAlternateKey(e => e.SeoUrl);
+            builder.Property(e => e.SeoUrl)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(e => e.Description)
+                .HasMaxLength(1024);
         }
     }
 }
