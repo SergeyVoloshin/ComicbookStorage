@@ -3,6 +3,7 @@
 const initialState: ComicbookListState = {
     comicbooks: [],
     hasMore: true,
+    currentPage: 0,
 }
 
 export function comicbookListReducer(
@@ -14,6 +15,7 @@ export function comicbookListReducer(
             return Object.assign({}, state, {
                 comicbooks: [...state.comicbooks, ...action.comicbooks],
                 hasMore: action.hasMore,
+                currentPage: state.currentPage + 1,
             });
         default:
             return state;

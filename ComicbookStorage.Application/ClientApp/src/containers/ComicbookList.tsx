@@ -5,14 +5,29 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { requestComicbookListAsync } from '../store/comicbookList/thunks';
 import { ApplicationState } from '../store/configureStore';
 import TileGrid from '../components/TileGrid';
+import Loading from "../components/Loading";
+
+interface ComicbookListSettings {
+    pageSize: number
+}
 
 type ComicbookListProps = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps>;
+    ReturnType<typeof mapDispatchToProps> &
+    ComicbookListSettings;
 
 export class ComicbookList extends Component<ComicbookListProps> {
 
     constructor(props: ComicbookListProps) {
         super(props);
+        this.loadMoreComicbooks = this.loadMoreComicbooks.bind(this);
+    }
+
+    loadMoreComicbooks(pageNumber: number) {
+        let pageSize: number = 50;
+        if (typeof this.props.pageSize !== 'undefined') {
+            pageSize = this.props.pageSize;
+        }
+        this.props.requestComicbookList(pageNumber, pageSize);
     }
 
     render() {
@@ -27,12 +42,11 @@ export class ComicbookList extends Component<ComicbookListProps> {
         return (
             <div>
                 <InfiniteScroll
-                    pageStart={0}
-                    loadMore={this.props.requestComicbookList}
+                    pageStart={this.props.comicbookListState.currentPage}
+                    loadMore={this.loadMoreComicbooks}
                     hasMore={this.props.comicbookListState.hasMore}
-                    loader={<div key={0}>Loading ...</div>}
-                    useWindow={true}
-                >
+                    loader={<Loading key={0} />}
+                    useWindow={true}>
                     <TileGrid tiles={tiles} />
                 </InfiniteScroll>
             </div>);
@@ -50,7 +64,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
     dispatch
 );
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ComicbookList)
+export default connect(mapStateToProps, mapDispatchToProps)(ComicbookList)

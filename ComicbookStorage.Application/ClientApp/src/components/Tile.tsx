@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
 export interface TileProps {
     url: string,
@@ -8,13 +9,13 @@ export interface TileProps {
 }
 
 const Tile = ({ url, imageUrl, title, description }: TileProps) => (
-    <div className="card">
-        <img className="card-img-top" src={imageUrl} alt={title} />
-        <div className="card-body">
-            <h5 className="card-title"><a href={url}>{title}</a></h5>
-            <p className="card-text">{description}</p>
-        </div>
-    </div>
+    <Card>
+        <CardImg top src={imageUrl} alt={title} />
+        <CardBody>
+            <CardTitle><a href={url}>{title}</a></CardTitle>
+            <CardText>{description}</CardText>
+        </CardBody>
+    </Card >
 );
 
 export default Tile

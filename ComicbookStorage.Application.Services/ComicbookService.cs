@@ -8,6 +8,7 @@ namespace ComicbookStorage.Application.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Configuration;
+    using Flurl;
 
     public interface IComicbookService : IService
     {
@@ -28,7 +29,8 @@ namespace ComicbookStorage.Application.Services
         public async Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize)
         {
             var (hasMore, comicbooks) = await comicbookManager.GetPage(pageNumber, pageSize);
-            var mappedComicbooks = comicbooks.Select(c => Mapper.Map(c, new ComicbookListItemDto($"{pathConfig.ComicbookImages}{c.SeoUrl}/cover.jpg")));
+            var mappedComicbooks = comicbooks.Select(c => 
+                Mapper.Map(c, new ComicbookListItemDto(Url.Combine(pathConfig.ComicbookImages, c.SeoUrl, $"{pathConfig.SmallCoverName}.{c.CoverExtension}"))));
             return new ComicbookListPageDto(hasMore, mappedComicbooks);
         }
     }

@@ -22,10 +22,10 @@ export interface ComicbookListItem {
 export interface ComicbookListState {
     comicbooks: ComicbookListItem[],
     hasMore: boolean,
+    currentPage: number,
 }
 
 export const COMICBOOK_LIST_RESPONSE = 'COMICBOOK_LIST_RESPONSE';
-
 
 interface ReceiveComicbookListAction {
     type: typeof COMICBOOK_LIST_RESPONSE,

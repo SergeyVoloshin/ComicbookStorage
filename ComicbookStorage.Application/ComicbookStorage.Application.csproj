@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
@@ -44,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
@@ -59,7 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\public\NewFolder\" />
+    <Folder Include="ClientApp\public\images\comicbooks\test_comicbook0\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
