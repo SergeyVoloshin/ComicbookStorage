@@ -12,11 +12,12 @@ export function comicbookListReducer(
 ): ComicbookListState {
     switch (action.type) {
         case COMICBOOK_LIST_RESPONSE:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 comicbooks: [...state.comicbooks, ...action.comicbooks],
                 hasMore: action.hasMore,
                 currentPage: state.currentPage + 1,
-            });
+            }
         default:
             return state;
     }

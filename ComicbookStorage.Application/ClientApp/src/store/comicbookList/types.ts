@@ -1,5 +1,4 @@
-﻿
-export interface ComicbookListItemDto {
+﻿export interface ComicbookListItemDto {
     id: number,
     name: string,
     description: string,
@@ -27,10 +26,10 @@ export interface ComicbookListState {
 
 export const COMICBOOK_LIST_RESPONSE = 'COMICBOOK_LIST_RESPONSE';
 
-interface ReceiveComicbookListAction {
+export interface ComicbookListReceivedAction {
     type: typeof COMICBOOK_LIST_RESPONSE,
     comicbooks: ComicbookListItem[],
     hasMore: boolean,
 }
 
-export type ComicbookListActionTypes = ReceiveComicbookListAction
+export type ComicbookListActionTypes = ComicbookListReceivedAction

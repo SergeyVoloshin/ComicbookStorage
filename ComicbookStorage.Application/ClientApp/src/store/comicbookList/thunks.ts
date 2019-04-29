@@ -1,9 +1,9 @@
 ﻿import { Dispatch } from 'redux';
-import { ComicbookListActionTypes, ComicbookListDto } from './types';
+import { ComicbookListReceivedAction, ComicbookListDto } from './types';
 import { receiveComicbookList } from './actions';
 import comicbookServer from '../../utils/comicbookServer';
 
-export const requestComicbookListAsync = (pageNumber: number, pageSize: number) => (dispatch: Dispatch): Promise<ComicbookListActionTypes> => {
+export const requestComicbookListAsync = (pageNumber: number, pageSize: number) => (dispatch: Dispatch): Promise<ComicbookListReceivedAction> => {
     return comicbookServer.get<ComicbookListDto>('/comicbook/' + pageNumber + '/' + pageSize, false)
         .then(json => dispatch(receiveComicbookList(json)));
 }

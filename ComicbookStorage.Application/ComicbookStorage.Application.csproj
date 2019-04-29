@@ -26,6 +26,7 @@
     <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
+    <None Remove="ClientApp\src\containers\SignUp.tsx" />
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <None Remove="ClientApp\src\index.js" />
     <None Remove="ClientApp\src\store\comicbookList\actions.ts" />
@@ -35,6 +36,10 @@
     <None Remove="ClientApp\src\store\commonUi\actions.ts" />
     <None Remove="ClientApp\src\store\commonUi\reducer.ts" />
     <None Remove="ClientApp\src\store\commonUi\types.ts" />
+    <None Remove="ClientApp\src\store\signUp\actions.ts" />
+    <None Remove="ClientApp\src\store\signUp\reducer.ts" />
+    <None Remove="ClientApp\src\store\signUp\thunks.ts" />
+    <None Remove="ClientApp\src\store\signUp\types.ts" />
     <None Remove="ClientApp\src\utils\comicbookServer.ts" />
   </ItemGroup>
 
@@ -48,6 +53,7 @@
     <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\SignUp.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\index.js" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\actions.ts" />
@@ -57,6 +63,10 @@
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\signUp\actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\signUp\reducer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\signUp\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\utils\comicbookServer.ts" />
   </ItemGroup>
 

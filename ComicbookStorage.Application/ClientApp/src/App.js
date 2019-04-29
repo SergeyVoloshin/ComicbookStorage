@@ -6,6 +6,7 @@ import Counter from './components/Counter';
 import FetchData from './components/FetchData';
 import ComicbookList from './containers/ComicbookList';
 import ProgressBar from './containers/ProgressBar';
+import SignUp from './containers/SignUp';
 
 export default () => (
     <div>
@@ -15,6 +16,8 @@ export default () => (
             <Route path='/counter' component={Counter} />
             <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
             <Route path='/comicbooks' component={ComicbookList} />
+            <Route path='/sign-up' component={SignUp} />
+
         </Layout>
     </div>
 );
