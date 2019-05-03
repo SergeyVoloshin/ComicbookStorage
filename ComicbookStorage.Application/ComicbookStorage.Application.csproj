@@ -41,6 +41,7 @@
     <None Remove="ClientApp\src\store\signUp\thunks.ts" />
     <None Remove="ClientApp\src\store\signUp\types.ts" />
     <None Remove="ClientApp\src\utils\comicbookServer.ts" />
+    <None Remove="ClientApp\src\utils\validators.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +69,7 @@
     <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\utils\comicbookServer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\utils\validators.ts" />
   </ItemGroup>
 
   <ItemGroup>
