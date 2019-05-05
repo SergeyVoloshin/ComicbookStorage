@@ -2,11 +2,12 @@
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { InjectedFormProps, Field, reduxForm, WrappedFieldProps, FormErrors } from "redux-form";
-import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row } from 'reactstrap';
+import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row, InputGroup, InputGroupAddon } from 'reactstrap';
 import { ApplicationState } from "../store/configureStore";
-import { createUserAsync } from "../store/signUp/thunks";
+import { createUserAsync, isNameTakenAsync } from "../store/signUp/thunks";
 import { User } from "../store/signUp/types";
 import { required, email, minLength } from "../utils/validators";
+import './SignUp.css'
 
 type SignUpProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps>
@@ -33,14 +34,18 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
                 <Col md={8}>
                     <FormGroup>
                         <Label for={fieldProperties.id}>{fieldProperties.label}</Label>
-                        <Input
-                            {...fieldProperties.input}
-                            id={fieldProperties.id}
-                            type={fieldProperties.type}
-                            placeholder={fieldProperties.placeholder}
-                            invalid={displayError} />
-                        {fieldProperties.meta.asyncValidating && <Spinner size="sm" type="grow" color="primary" />}
-                        {displayError && <FormFeedback>{fieldProperties.meta.error}</FormFeedback>}
+                        <InputGroup className="flex-wrap">
+                            <Input
+                                {...fieldProperties.input}
+                                id={fieldProperties.id}
+                                type={fieldProperties.type}
+                                placeholder={fieldProperties.placeholder}
+                                invalid={displayError} />
+                            {fieldProperties.meta.asyncValidating && <InputGroupAddon addonType="append" className="d-inline-block align-middle mt-1 ml-n4">
+                                <Spinner size="sm" type="grow" color="primary"/>
+                            </InputGroupAddon>}
+                            {displayError && <FormFeedback className="w-100">{fieldProperties.meta.error}</FormFeedback>}
+                        </InputGroup>
                         {typeof fieldProperties.formText !== 'undefined' && <FormText color="muted">{fieldProperties.formText}</FormText>}
                     </FormGroup>
                 </Col>
@@ -101,21 +106,12 @@ const formValidate = (values: User, props: SignUpProps & InjectedFormProps<User,
     return errors;
 }
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const asyncFormValidate = (values: User,
     dispatch: Dispatch,
     props: SignUpProps & InjectedFormProps<User, SignUpProps>,
     blurredField: string): Promise<any> => {
-    console.log('sdfsdfsdf');
-    return sleep(1000).then(() => {
-        // simulate server latency
-        if (['john', 'paul', 'george', 'ringo'].includes(values.name)) {
-            console.log('sdfsdfsdf1111');
-            throw { name: 'That username is taken' }
-        }
-    })
+    return isNameTakenAsync(values.name);
 }
-
 
 const mapStateToProps = (state: ApplicationState) => {
     return { signUpState: state.signUp }

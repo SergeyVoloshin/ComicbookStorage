@@ -1,25 +1,23 @@
 ﻿
 namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
 {
-    using System;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
     using Tasks;
 
     internal static class RepositoryExtensions
     {
         public static IQueryable<TEntity> Page<TEntity>(this IQueryable<TEntity> source, uint pageNumber, uint pageSize)
         {
-            return source.Skip((int) ((pageNumber - 1) * pageSize)).Take((int) pageSize);
+            return source.Skip((int)((pageNumber - 1) * pageSize)).Take((int)pageSize);
         }
 
         public static Task<IEnumerable<TEntity>> ToEnumerableAsync<TEntity>(this IQueryable<TEntity> source)
         {
-            return source.ToListAsync().Transform(r => (IEnumerable<TEntity>) r);
+            return source.ToListAsync().Transform(r => (IEnumerable<TEntity>)r);
         }
 
         public static Task<ReadOnlyCollection<TEntity>> ToReadOnlyCollectionAsync<TEntity>(this IQueryable<TEntity> source)
@@ -31,5 +29,5 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
         {
             return source.CountAsync().Transform(r => r > 0);
         }
-    }   
+    }
 }

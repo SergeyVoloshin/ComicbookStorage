@@ -8,7 +8,7 @@ class ComicbookServer {
 
         return fetch(url)
             .then(
-                response => {
+            response => {
                     this.checkProgressStop(showProgressbar);
                     return response.json();
                 },

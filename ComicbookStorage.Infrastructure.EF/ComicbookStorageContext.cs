@@ -15,6 +15,8 @@ namespace ComicbookStorage.Infrastructure.EF
 
         public DbSet<Comicbook> Comicbooks { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -23,6 +25,7 @@ namespace ComicbookStorage.Infrastructure.EF
             }
 
             modelBuilder.ApplyConfiguration(new ComicbookMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
         }
     }
 }

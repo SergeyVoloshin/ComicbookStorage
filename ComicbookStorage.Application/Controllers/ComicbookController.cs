@@ -1,15 +1,13 @@
 ﻿
-
 namespace ComicbookStorage.Controllers
 {
     using System.Threading.Tasks;
+    using Application.Controllers.Base;
     using Application.DTOs.Comicbook;
     using Application.Services;
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("[controller]")]
-    [ApiController]
-    public class ComicbookController : Controller
+    public class ComicbookController : ApplicationControllerBase
     {
         private readonly IComicbookService comicbookService;
 
@@ -19,7 +17,7 @@ namespace ComicbookStorage.Controllers
         }
 
         [HttpGet("{pageNumber}/{pageSize}/")]
-        public async Task<ComicbookListPageDto> GetComicbooks(uint pageNumber, uint pageSize)
+        public async Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize)
         {
             return await comicbookService.GetPage(pageNumber, pageSize);
         }

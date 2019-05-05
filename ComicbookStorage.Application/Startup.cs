@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ComicbookStorage.Application
 {
     using Infrastructure.DI;
+    using Microsoft.AspNetCore.Mvc.ApplicationModels;
+    using Routing;
 
     public class Startup
     {
@@ -21,7 +23,11 @@ namespace ComicbookStorage.Application
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+                {
+                    options.Conventions.Add(new RouteTokenTransformerConvention(
+                        new SlugifyParameterTransformer()));
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,7 +60,7 @@ namespace ComicbookStorage.Application
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{controller}/{action}");
             });
 
             app.UseSpa(spa =>
