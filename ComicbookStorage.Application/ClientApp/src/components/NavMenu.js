@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Nav } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
@@ -17,6 +17,7 @@ export default class NavMenu extends React.Component {
             isOpen: !this.state.isOpen
         });
     }
+
     render() {
         return (
             <header>
@@ -25,15 +26,9 @@ export default class NavMenu extends React.Component {
                         <NavbarBrand tag={Link} to="/">ComicbookStorage.Application</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2"  />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-                            <ul className="navbar-nav flex-grow">
+                            <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/comicbooks">Comicbooks</NavLink>
@@ -41,7 +36,7 @@ export default class NavMenu extends React.Component {
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/sign-up">Sign Up</NavLink>
                                 </NavItem>
-                            </ul>
+                            </Nav>
                         </Collapse>
                     </Container>
                 </Navbar>

@@ -27,6 +27,10 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
         this.props.createUser();
     }
 
+    maxLength255 = maxLength(255);
+    maxLength50 = maxLength(50);
+    minLength5 = minLength(5);
+
     renderField = (fieldProperties: WrappedFieldProps & InputProps): JSX.Element => {
         let displayError = fieldProperties.meta.touched && typeof fieldProperties.meta.error !== 'undefined';
         return (
@@ -65,7 +69,7 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
                     component={this.renderField}
                     label="Email*"
                     formText="We'll never share your email with anyone else."
-                    validate={[required, email, maxLength(255)]} />
+                    validate={[required, this.maxLength255, email]} />
                 <Field
                     name={nameField}
                     id={nameField}
@@ -73,14 +77,14 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
                     placeholder="John Doe"
                     component={this.renderField}
                     label="Display Name*"
-                    validate={[required, minLength(5), maxLength(50)]} />
+                    validate={[required, this.minLength5, this.maxLength50]} />
                 <Field
                     name="password"
                     id="password"
                     type="password"
                     component={this.renderField}
                     label="Password*"
-                    validate={[required, minLength(5), maxLength(255)]} />
+                    validate={[required, this.minLength5, this.maxLength255]} />
                 <Field
                     name="confirmPassword"
                     id="confirmPassword"
@@ -112,9 +116,10 @@ const asyncFormValidate = (values: User,
     blurredField: keyof User): Promise<any> => {
     if (blurredField) {
         return isUniqueFieldTakenAsync(blurredField, values[blurredField], props.asyncErrors);
+    } else {
+        return new Promise<boolean>(resolve => resolve());
     }
-    return new Promise<boolean>(resolve => resolve());
-
+    
 }
 
 const mapStateToProps = (state: ApplicationState) => {
