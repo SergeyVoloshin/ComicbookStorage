@@ -1,5 +1,6 @@
 ﻿import { Dispatch } from 'redux';
-import { CreateUserActionTypes } from './types';
+import { FormErrors } from "redux-form";
+import { CreateUserActionTypes, User } from './types';
 import { processUserCreated } from './actions';
 import comicbookServer from '../../utils/comicbookServer';
 
@@ -7,12 +8,18 @@ export const createUserAsync = () => (dispatch: Dispatch): Promise<CreateUserAct
     return new Promise(resolve => setTimeout(resolve, 1000)).then(res => dispatch(processUserCreated()));
 }
 
-export const isNameTakenAsync = (name: string): Promise<boolean> => {
-    return comicbookServer.get<boolean>('/account/is-name-taken/' + name, false)
+export const isUniqueFieldTakenAsync = (fieldName: string, fieldValue: string, existingErrors: FormErrors<User>): Promise<boolean> => {
+    return comicbookServer.get<boolean>(`/account/is-${fieldName}-taken/${fieldValue}`, false)
         .then(result => {
             if (result) {
-                throw { name: 'That username is taken' }
+                throw {
+                    ...existingErrors,
+                    [fieldName]: `That ${fieldName} is taken`
+                }
             }
-            return false;
+            if (existingErrors) {
+                throw existingErrors;
+            }
+            return true;
         });
 }

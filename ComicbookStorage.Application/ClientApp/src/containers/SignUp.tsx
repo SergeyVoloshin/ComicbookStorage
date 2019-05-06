@@ -2,12 +2,11 @@
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { InjectedFormProps, Field, reduxForm, WrappedFieldProps, FormErrors } from "redux-form";
-import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row, InputGroup, InputGroupAddon } from "reactstrap";
 import { ApplicationState } from "../store/configureStore";
-import { createUserAsync, isNameTakenAsync } from "../store/signUp/thunks";
+import { createUserAsync, isUniqueFieldTakenAsync } from "../store/signUp/thunks";
 import { User } from "../store/signUp/types";
-import { required, email, minLength } from "../utils/validators";
-import './SignUp.css'
+import { required, email, minLength, maxLength } from "../utils/validators";
 
 type SignUpProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps>
@@ -19,16 +18,17 @@ interface InputProps {
     formText?: string,
 }
 
-export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & SignUpProps> {
+const emailField: string = "email";
+const nameField: string = "name";
 
-    minLength5 = minLength(5);
+export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & SignUpProps> {
 
     submit = (values: User) => {
         this.props.createUser();
     }
 
     renderField = (fieldProperties: WrappedFieldProps & InputProps): JSX.Element => {
-        let displayError: boolean = fieldProperties.meta.touched && typeof fieldProperties.meta.error !== 'undefined';
+        let displayError = fieldProperties.meta.touched && typeof fieldProperties.meta.error !== 'undefined';
         return (
             <Row form>
                 <Col md={8}>
@@ -42,11 +42,11 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
                                 placeholder={fieldProperties.placeholder}
                                 invalid={displayError} />
                             {fieldProperties.meta.asyncValidating && <InputGroupAddon addonType="append" className="d-inline-block align-middle mt-1 ml-n4">
-                                <Spinner size="sm" type="grow" color="primary"/>
+                                <Spinner size="sm" type="grow" color="primary" />
                             </InputGroupAddon>}
                             {displayError && <FormFeedback className="w-100">{fieldProperties.meta.error}</FormFeedback>}
                         </InputGroup>
-                        {typeof fieldProperties.formText !== 'undefined' && <FormText color="muted">{fieldProperties.formText}</FormText>}
+                        {typeof fieldProperties.formText !== "undefined" && <FormText color="muted">{fieldProperties.formText}</FormText>}
                     </FormGroup>
                 </Col>
             </Row>
@@ -58,29 +58,29 @@ export class SignUp extends Component<InjectedFormProps<User, SignUpProps> & Sig
         return (
             <Form onSubmit={handleSubmit(this.submit)}>
                 <Field
-                    name="email"
-                    id="email"
+                    name={emailField}
+                    id={emailField}
                     type="email"
                     placeholder="user@example.com"
                     component={this.renderField}
                     label="Email*"
                     formText="We'll never share your email with anyone else."
-                    validate={[required, email]} />
+                    validate={[required, email, maxLength(255)]} />
                 <Field
-                    name="name"
-                    id="name"
+                    name={nameField}
+                    id={nameField}
                     type="text"
                     placeholder="John Doe"
                     component={this.renderField}
                     label="Display Name*"
-                    validate={[required, this.minLength5]} />
+                    validate={[required, minLength(5), maxLength(50)]} />
                 <Field
                     name="password"
                     id="password"
                     type="password"
                     component={this.renderField}
                     label="Password*"
-                    validate={[required, this.minLength5]} />
+                    validate={[required, minLength(5), maxLength(255)]} />
                 <Field
                     name="confirmPassword"
                     id="confirmPassword"
@@ -108,9 +108,13 @@ const formValidate = (values: User, props: SignUpProps & InjectedFormProps<User,
 
 const asyncFormValidate = (values: User,
     dispatch: Dispatch,
-    props: SignUpProps & InjectedFormProps<User, SignUpProps>,
-    blurredField: string): Promise<any> => {
-    return isNameTakenAsync(values.name);
+    props: SignUpProps & InjectedFormProps<User, SignUpProps> & { asyncErrors: FormErrors<User> },
+    blurredField: keyof User): Promise<any> => {
+    if (blurredField) {
+        return isUniqueFieldTakenAsync(blurredField, values[blurredField], props.asyncErrors);
+    }
+    return new Promise<boolean>(resolve => resolve());
+
 }
 
 const mapStateToProps = (state: ApplicationState) => {
@@ -128,7 +132,7 @@ const signUpForm = reduxForm<User, SignUpProps>({
     form: "signUp",
     validate: formValidate,
     asyncValidate: asyncFormValidate,
-    asyncBlurFields: ['name']
+    asyncBlurFields: [nameField, emailField]
 })(SignUp);
 
 export default connect(mapStateToProps, mapDispatchToProps)(signUpForm)

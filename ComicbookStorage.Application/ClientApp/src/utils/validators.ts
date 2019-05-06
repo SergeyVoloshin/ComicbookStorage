@@ -6,4 +6,7 @@ export const email = (value: string) =>
         : undefined;
 
 export const minLength = (min: number) => (value: string) =>
-    value && value.length < min ? `Must be ${min} characters or more` : undefined
+    value && value.length < min ? `Must be ${min} characters or more` : undefined;
+
+export const maxLength = (max: number) => (value: string) =>
+    value && value.length > max ? `Must be ${max} characters or less` : undefined;
