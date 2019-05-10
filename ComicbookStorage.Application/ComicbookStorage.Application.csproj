@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\ErrorMessage.tsx" />
     <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
@@ -36,6 +37,7 @@
     <None Remove="ClientApp\src\store\commonUi\actions.ts" />
     <None Remove="ClientApp\src\store\commonUi\reducer.ts" />
     <None Remove="ClientApp\src\store\commonUi\types.ts" />
+    <None Remove="ClientApp\src\store\common\types.ts" />
     <None Remove="ClientApp\src\store\signUp\actions.ts" />
     <None Remove="ClientApp\src\store\signUp\reducer.ts" />
     <None Remove="ClientApp\src\store\signUp\thunks.ts" />
@@ -51,6 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\ErrorMessage.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
@@ -64,6 +67,7 @@
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\common\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />

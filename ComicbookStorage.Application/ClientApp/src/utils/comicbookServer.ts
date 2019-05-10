@@ -8,11 +8,30 @@ class ComicbookServer {
 
         return fetch(url)
             .then(
-            response => {
+                response => {
                     this.checkProgressStop(showProgressbar);
                     return response.json();
+                }
+            );
+    }
+
+    post<T>(url: string, data: T, showProgressbar: boolean = true): Promise<Response> {
+        this.checkProgressStart(showProgressbar);
+
+        return fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                error => console.log('An error occurred.', error)
+                body: JSON.stringify(data),
+            })
+            .then(
+                response => {
+                    this.checkProgressStop(showProgressbar);
+                    return response;
+                }
             );
     }
 

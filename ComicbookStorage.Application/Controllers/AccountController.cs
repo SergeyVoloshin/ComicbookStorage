@@ -4,6 +4,7 @@ namespace ComicbookStorage.Application.Controllers
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
     using Base;
+    using DTOs.Account;
     using Services;
 
     public class AccountController : ApplicationControllerBase
@@ -25,6 +26,13 @@ namespace ComicbookStorage.Application.Controllers
         public Task<bool> IsNameTaken(string name)
         {
             return accountService.IsUserNameTaken(name);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(CreateUserDto user)
+        {
+            await accountService.IsUserNameTaken(user.Name);
+            return Ok();
         }
     }
 }
