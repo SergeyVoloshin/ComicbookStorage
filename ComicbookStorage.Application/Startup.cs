@@ -10,6 +10,7 @@ namespace ComicbookStorage.Application
     using Infrastructure.DI;
     using Microsoft.AspNetCore.Mvc.ApplicationModels;
     using Routing;
+    using Validation;
 
     public class Startup
     {
@@ -27,7 +28,11 @@ namespace ComicbookStorage.Application
                 {
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
+                    options.ModelMetadataDetailsProviders.Add(
+                        new CustomValidationMetadataProvider(typeof(SiteResources)));
+
                 }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

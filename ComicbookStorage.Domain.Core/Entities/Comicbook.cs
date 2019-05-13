@@ -3,7 +3,7 @@ namespace ComicbookStorage.Domain.Core.Entities
 {
     using Base;
 
-    public class Comicbook : IAggregateRoot
+    public class Comicbook : Entity, IAggregateRoot
     {
         public Comicbook(string name, string description, string coverExtension)
         {
@@ -11,8 +11,6 @@ namespace ComicbookStorage.Domain.Core.Entities
             Description = description;
             CoverExtension = coverExtension;
         }
-
-        public int Id { get; private set; }
 
         public string Name { get; private set; }
 

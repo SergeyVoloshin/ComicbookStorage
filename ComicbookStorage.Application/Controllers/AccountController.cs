@@ -1,9 +1,12 @@
 ﻿
 namespace ComicbookStorage.Application.Controllers
 {
+    using System;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using System.Threading.Tasks;
     using Base;
+    using Domain.OperationResults;
     using DTOs.Account;
     using Services;
 
@@ -31,8 +34,17 @@ namespace ComicbookStorage.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-            await accountService.IsUserNameTaken(user.Name);
-            return Ok();
+            var result = await accountService.CreateUser(user);
+            switch (result)
+            {
+                case UserModificationResult.Success:
+                    return Ok();
+                case UserModificationResult.DuplicateValues:
+                    ModelState.AddModelError<CreateUserDto>(u => u.Email, SiteResources.UserDuplicateValues);
+                    return BadRequest(ModelState);
+                default:
+                    throw new InvalidOperationException(nameof(UserModificationResult));
+            }
         }
     }
 }

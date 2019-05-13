@@ -1,16 +1,15 @@
 ﻿
 namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 {
+    using Base;
     using Domain.Core.Entities;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    internal class ComicbookMap : IEntityTypeConfiguration<Comicbook>
+    internal class ComicbookMap : EntityMap<Comicbook>
     {
-        public void Configure(EntityTypeBuilder<Comicbook> builder)
+        public override void Configure(EntityTypeBuilder<Comicbook> builder)
         {
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
 
             builder.Property(e => e.Name)
                 .IsRequired()

@@ -1,54 +1,54 @@
 ﻿
+
 namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
 {
-    using Domain.Core.Entities.Base;
-    using LinqSpecs;
-    using Microsoft.EntityFrameworkCore;
-    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
+    using Domain.Core.Entities.Base;
+    using LinqSpecs;
+    using Microsoft.EntityFrameworkCore;
 
-    public abstract class RepositoryBase<TEntity> where TEntity : class, IAggregateRoot
+    public class EntityRepositoryBase<TEntity> where TEntity : class, IEntity
     {
-        private readonly IQueryable<TEntity> dbset;
+        protected readonly IQueryable<TEntity> DbSet;
 
-        private readonly ComicbookStorageContext context;
+        protected readonly ComicbookStorageContext Context;
 
-        protected RepositoryBase(ComicbookStorageContext context)
+        protected EntityRepositoryBase(ComicbookStorageContext context)
         {
-            this.context = context;
-            dbset = context.Set<TEntity>().AsNoTracking();
+            Context = context;
+            DbSet = context.Set<TEntity>().AsNoTracking();
         }
 
         public Task<ReadOnlyCollection<TEntity>> GetAllAsync()
         {
-            return dbset.ToReadOnlyCollectionAsync();
+            return DbSet.ToReadOnlyCollectionAsync();
         }
 
         public Task<TEntity> GetAsync(int id)
         {
-            return dbset.FirstOrDefaultAsync(e => e.Id == id);
+            return DbSet.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public void Add(TEntity entity)
         {
-            context.Entry(entity).State = EntityState.Added;
+            Context.Entry(entity).State = EntityState.Added;
         }
 
         public void Update(TEntity entity)
         {
-            context.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(TEntity entity)
         {
-            context.Entry(entity).State = EntityState.Deleted;
+            Context.Entry(entity).State = EntityState.Deleted;
         }
 
         public Task<ReadOnlyCollection<TEntity>> GetAllAsync(Specification<TEntity> specification)
         {
-            return dbset.Where(specification).ToReadOnlyCollectionAsync();
+            return DbSet.Where(specification).ToReadOnlyCollectionAsync();
         }
 
         public Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(Specification<TEntity> specification, uint pageNumber, uint pageSize)
@@ -63,47 +63,27 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
 
         public Task<TEntity> GetAsync(Specification<TEntity> specification)
         {
-            return dbset.FirstOrDefaultAsync(specification);
-        }
-
-        public Task<int> GetIdAsync(Specification<TEntity> specification)
-        {
-            return dbset.Where(specification).Select(e => e.Id).FirstOrDefaultAsync();
+            return DbSet.FirstOrDefaultAsync(specification);
         }
 
         public Task<int> CountAsync(Specification<TEntity> specification)
         {
-            return dbset.CountAsync(specification);
+            return DbSet.CountAsync(specification);
         }
 
         public Task<bool> ExistsAsync(Specification<TEntity> specification)
         {
-            return dbset.Where(specification).ExistsAsync();
+            return DbSet.Where(specification).ExistsAsync();
         }
 
         public Task<bool> ExistsAsync(int id)
         {
-            return dbset.Where(e => e.Id == id).ExistsAsync();
-        }
-
-        public Task<TEntity> GetAggregateAsync(Specification<TEntity> specification)
-        {
-            return GetBaseQuery().FirstOrDefaultAsync(specification);
-        }
-
-        public Task<TEntity> GetAggregateAsync(int id)
-        {
-            return GetBaseQuery().FirstOrDefaultAsync(e => e.Id == id);
-        }
-
-        protected virtual IQueryable<TEntity> GetBaseQuery()
-        {
-            throw new NotImplementedException();
+            return DbSet.Where(e => e.Id == id).ExistsAsync();
         }
 
         private async Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(bool applySpecification, Specification<TEntity> specification, uint pageNumber, uint pageSize)
         {
-            IQueryable<TEntity> query = applySpecification  ? dbset.Where(specification) : dbset;
+            IQueryable<TEntity> query = applySpecification ? DbSet.Where(specification) : DbSet;
             var entities = await query.Page(pageNumber, pageSize).ToReadOnlyCollectionAsync();
             if (entities.Count < pageSize)
             {

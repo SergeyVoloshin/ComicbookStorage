@@ -1,15 +1,18 @@
 ﻿
 namespace ComicbookStorage.Infrastructure.EF
 {
-    using System.Threading.Tasks;
+    using System;
     using Domain.DataAccess;
     using Microsoft.EntityFrameworkCore.Storage;
+    using System.Threading.Tasks;
+    using System.Data;
+    using Microsoft.EntityFrameworkCore;
 
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ComicbookStorageContext context;
 
-        private Task<IDbContextTransaction> transactionTask;
+        private IDbContextTransaction transaction;
 
         public UnitOfWork(ComicbookStorageContext context)
         {
@@ -21,31 +24,45 @@ namespace ComicbookStorage.Infrastructure.EF
             return context.SaveChangesAsync();
         }
 
-        public Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
         {
-            if (transactionTask == null)
+            if (transaction == null)
             {
-                transactionTask = context.Database.BeginTransactionAsync();
+                transaction = await context.Database.BeginTransactionAsync(isolationLevel);
             }
-            return transactionTask;
         }
 
-        public async Task TransactionCommitAsync()
+        public void TransactionCommit()
         {
-            using (var transaction = await transactionTask)
-            {
-                transaction.Commit();
-            }
-            transactionTask = null;
+            transaction.Commit();
+            transaction.Dispose();
+            transaction = null;
         }
 
-        public async Task TransactionRollbackAsync()
+        public void TransactionRollback()
         {
-            using (var transaction = await transactionTask)
+            transaction.Rollback();
+            transaction.Dispose();
+            transaction = null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                transaction.Rollback();
+                transaction?.Dispose();
             }
-            transactionTask = null;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~UnitOfWork()
+        {
+            Dispose(false);
         }
     }
 }

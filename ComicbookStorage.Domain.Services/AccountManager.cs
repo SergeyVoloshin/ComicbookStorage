@@ -1,18 +1,22 @@
 ﻿
 namespace ComicbookStorage.Domain.Services
 {
-    using System.Collections.ObjectModel;
+    using System.Data;
     using System.Threading.Tasks;
     using Base;
+    using Core.Entities;
     using Core.Entities.Specifications.User;
     using DataAccess;
     using DataAccess.Repositories;
+    using OperationResults;
 
     public interface IAccountManager : IManager
     {
         Task<bool> IsUserEmailTaken(string email);
 
         Task<bool> IsUserNameTaken(string name);
+
+        Task<UserModificationResult> CreateUser(string email, string name, string password);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -32,6 +36,22 @@ namespace ComicbookStorage.Domain.Services
         public Task<bool> IsUserNameTaken(string name)
         {
             return userRepository.ExistsAsync(new UserWithNameSpec(name));
+        }
+
+        public async Task<UserModificationResult> CreateUser(string email, string name, string password)
+        {
+            await UnitOfWork.BeginTransactionAsync(IsolationLevel.Serializable);
+            if (!await userRepository.ExistsAsync(new UserWithEmailSpec(email) || new UserWithNameSpec(name)))
+            {
+                var user = new User(email, name, password);
+                userRepository.Add(user);
+                await UnitOfWork.SaveAsync();
+                UnitOfWork.TransactionCommit();
+                return UserModificationResult.Success;
+            }
+
+            UnitOfWork.TransactionRollback();
+            return UserModificationResult.DuplicateValues;
         }
     }
 }

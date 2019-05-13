@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190505153154_AddUserAccounts")]
-    partial class AddUserAccounts
+    [Migration("20190513171425_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,9 +54,14 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasMaxLength(255);
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<int>("EncryptionIterationCount");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -68,7 +73,7 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasMaxLength(36);
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 

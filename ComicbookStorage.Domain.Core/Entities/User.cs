@@ -1,21 +1,25 @@
 ﻿
 namespace ComicbookStorage.Domain.Core.Entities
 {
-    using System;
     using Base;
     using Infrastructure.Cryptography;
 
-    public class User : IAggregateRoot
+    public class User : Entity, IAggregateRoot
     {
+        private const int DefaultSaltLength = 32;
+        private const int DefaultHashLength = 32;
+        private const int DefaultIterationCount = 64000;
+        private const int DefaultConfirmationCodeLength = 64;
+
         public User(string email, string name, string password)
         {
             Email = email.Trim();
             Name = name.Trim();
-            Salt = Guid.NewGuid().ToString();
-            Password = GetSaltedPassword(Salt, password);
+            Salt = PasswordEncryptionProvider.GenerateSalt(DefaultSaltLength);
+            EncryptionIterationCount = DefaultIterationCount;
+            Password = PasswordEncryptionProvider.CreateHash(password, Salt, EncryptionIterationCount, DefaultHashLength);
+            ConfirmationCode = PasswordEncryptionProvider.GenerateSalt(DefaultConfirmationCodeLength);
         }
-
-        public int Id { get; private set; }
 
         public string Email { get; private set; }
 
@@ -23,11 +27,10 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public string Salt { get; private set; }
 
+        public int EncryptionIterationCount { get; private set; }
+
         public string Password { get; private set; }
 
-        private string GetSaltedPassword(string salt, string password)
-        {
-            return HashAlgorithm.GetMd5(string.Concat(salt, HashAlgorithm.GetMd5(password)));
-        }
+        public string ConfirmationCode { get; private set; }
     }
 }

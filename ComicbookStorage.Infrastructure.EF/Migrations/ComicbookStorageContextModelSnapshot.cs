@@ -52,9 +52,14 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasMaxLength(255);
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<int>("EncryptionIterationCount");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -66,7 +71,7 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasMaxLength(36);
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 

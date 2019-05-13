@@ -1,16 +1,15 @@
 ﻿
 namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 {
+    using Base;
     using Domain.Core.Entities;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    internal class UserMap : IEntityTypeConfiguration<User>
+    internal class UserMap : EntityMap<User>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public override void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
 
             builder.Property(e => e.Name)
                 .IsRequired()
@@ -28,7 +27,13 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.Salt)
                 .IsRequired()
-                .HasMaxLength(36);
+                .HasMaxLength(255);
+
+            builder.Property(e => e.EncryptionIterationCount)
+                .IsRequired();
+
+            builder.Property(e => e.ConfirmationCode)
+                .HasMaxLength(255);
         }
     }
 }
