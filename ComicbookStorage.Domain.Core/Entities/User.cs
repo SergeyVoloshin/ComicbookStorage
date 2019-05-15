@@ -18,7 +18,7 @@ namespace ComicbookStorage.Domain.Core.Entities
             Salt = PasswordEncryptionProvider.GenerateSalt(DefaultSaltLength);
             EncryptionIterationCount = DefaultIterationCount;
             Password = PasswordEncryptionProvider.CreateHash(password, Salt, EncryptionIterationCount, DefaultHashLength);
-            ConfirmationCode = PasswordEncryptionProvider.GenerateSalt(DefaultConfirmationCodeLength);
+            ConfirmationCode = PasswordEncryptionProvider.GenerateConfirmationCode(DefaultConfirmationCodeLength);
         }
 
         public string Email { get; private set; }

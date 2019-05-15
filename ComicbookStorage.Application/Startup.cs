@@ -1,14 +1,15 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ComicbookStorage.Application
 {
     using Infrastructure.DI;
+    using Infrastructure.Localization;
     using Microsoft.AspNetCore.Mvc.ApplicationModels;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Routing;
     using Validation;
 
@@ -29,7 +30,7 @@ namespace ComicbookStorage.Application
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
                     options.ModelMetadataDetailsProviders.Add(
-                        new CustomValidationMetadataProvider(typeof(SiteResources)));
+                        new CustomValidationMetadataProvider(typeof(LocalizedResources)));
 
                 }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

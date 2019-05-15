@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicbookStorage.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicbookStorage.Application.Validators", "ComicbookStorage.Application.Validators\ComicbookStorage.Application.Validators.csproj", "{9576E1B6-D04B-4948-80BC-AE128FEAF2C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicbookStorage.Domain.OperationResults", "ComicbookStorage.Domain.OperationResults\ComicbookStorage.Domain.OperationResults.csproj", "{58777FC0-90B9-473C-B450-2764E952988A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicbookStorage.Domain.OperationResults", "ComicbookStorage.Domain.OperationResults\ComicbookStorage.Domain.OperationResults.csproj", "{58777FC0-90B9-473C-B450-2764E952988A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicbookStorage.Infrastructure.Localization", "ComicbookStorage.Infrastructure.Localization\ComicbookStorage.Infrastructure.Localization.csproj", "{A8E86EF9-7466-4695-B56A-B001CAF38C63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{58777FC0-90B9-473C-B450-2764E952988A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58777FC0-90B9-473C-B450-2764E952988A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58777FC0-90B9-473C-B450-2764E952988A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E86EF9-7466-4695-B56A-B001CAF38C63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E86EF9-7466-4695-B56A-B001CAF38C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E86EF9-7466-4695-B56A-B001CAF38C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E86EF9-7466-4695-B56A-B001CAF38C63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

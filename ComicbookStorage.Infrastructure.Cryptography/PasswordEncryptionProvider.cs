@@ -22,6 +22,25 @@ namespace ComicbookStorage.Infrastructure.Cryptography
             }
         }
 
+        public static string GenerateConfirmationCode(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder result = new StringBuilder();
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] uintBuffer = new byte[sizeof(uint)];
+
+                while (length-- > 0)
+                {
+                    rng.GetBytes(uintBuffer);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
+                    result.Append(valid[(int)(num % (uint)valid.Length)]);
+                }
+            }
+
+            return result.ToString();
+        }
+
         public static string GenerateSalt(int length)
         {
             byte[] salt = new byte[length];

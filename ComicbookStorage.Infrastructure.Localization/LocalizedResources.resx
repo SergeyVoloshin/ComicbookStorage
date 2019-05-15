@@ -117,7 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UserDuplicateValues" xml:space="preserve">
+  <data name="EmailConfirmationMessage" xml:space="preserve">
+    <value>Please click the link below to confirm your email:&lt;br/&gt;
+&lt;a href="{ConfirmationLink}"&gt;Confirm this email address&lt;/a&gt;</value>
+  </data>
+  <data name="EmailConfirmationSubject" xml:space="preserve">
+    <value>[{ResourceName}] Confirm your email address</value>
+  </data>
+  <data name="UserDuplicateValuesError" xml:space="preserve">
     <value>A user with this email or username has already been registered</value>
   </data>
 </root>

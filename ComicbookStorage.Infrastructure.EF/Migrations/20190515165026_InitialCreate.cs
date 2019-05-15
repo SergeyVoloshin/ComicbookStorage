@@ -25,6 +25,35 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Email",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Recipient = table.Column<string>(maxLength: 255, nullable: false),
+                    Subject = table.Column<string>(maxLength: 255, nullable: false),
+                    Body = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Email", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmailTemplate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Subject = table.Column<string>(maxLength: 255, nullable: false),
+                    Body = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailTemplate", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -43,12 +72,24 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     table.UniqueConstraint("AK_User_Email", x => x.Email);
                     table.UniqueConstraint("AK_User_Name", x => x.Name);
                 });
+
+            migrationBuilder.InsertData(
+                table: "EmailTemplate",
+                columns: new[] { "Id", "Body", "Subject" },
+                values: new object[] { 1, @"Please click the link below to confirm your email:<br/>
+<a href=""{ConfirmationLink}"">Confirm this email address</a>", "[{ResourceName}] Confirm your email address" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Comicbook");
+
+            migrationBuilder.DropTable(
+                name: "Email");
+
+            migrationBuilder.DropTable(
+                name: "EmailTemplate");
 
             migrationBuilder.DropTable(
                 name: "User");

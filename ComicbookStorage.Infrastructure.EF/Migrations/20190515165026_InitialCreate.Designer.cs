@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190513171425_InitialCreate")]
+    [Migration("20190515165026_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,55 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     b.HasAlternateKey("SeoUrl");
 
                     b.ToTable("Comicbook");
+                });
+
+            modelBuilder.Entity("ComicbookStorage.Domain.Core.Entities.Email", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .IsRequired();
+
+                    b.Property<string>("Recipient")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Email");
+                });
+
+            modelBuilder.Entity("ComicbookStorage.Domain.Core.Entities.EmailTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .IsRequired();
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailTemplate");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = @"Please click the link below to confirm your email:<br/>
+<a href=""{ConfirmationLink}"">Confirm this email address</a>",
+                            Subject = "[{ResourceName}] Confirm your email address"
+                        });
                 });
 
             modelBuilder.Entity("ComicbookStorage.Domain.Core.Entities.User", b =>

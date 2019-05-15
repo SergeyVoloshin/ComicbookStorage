@@ -14,14 +14,14 @@ namespace ComicbookStorage.Application.Controllers.Base
         {
             var errors = new ModelStateDictionary();
             errors.AddModelError(expression, errorMessage);
-            return BadRequest(errors);
+            return BadRequest(new ValidationProblemDetails(errors));
         }
 
         public BadRequestObjectResult BadRequest(string key, string errorMessage)
         {
             var errors = new ModelStateDictionary();
             errors.AddModelError(key, errorMessage);
-            return BadRequest(errors);
+            return BadRequest(new ValidationProblemDetails(errors));
         }
     }
 }

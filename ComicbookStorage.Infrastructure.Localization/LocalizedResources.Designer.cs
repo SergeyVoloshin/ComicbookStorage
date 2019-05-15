@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ComicbookStorage.Application {
+namespace ComicbookStorage.Infrastructure.Localization {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace ComicbookStorage.Application {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SiteResources {
+    public class LocalizedResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SiteResources() {
+        internal LocalizedResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ComicbookStorage.Application.SiteResources", typeof(SiteResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ComicbookStorage.Infrastructure.Localization.LocalizedResources", typeof(LocalizedResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace ComicbookStorage.Application {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,11 +61,30 @@ namespace ComicbookStorage.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please click the link below to confirm your email:&lt;br/&gt;
+        ///&lt;a href=&quot;{ConfirmationLink}&quot;&gt;Confirm this email address&lt;/a&gt;.
+        /// </summary>
+        public static string EmailConfirmationMessage {
+            get {
+                return ResourceManager.GetString("EmailConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{ResourceName}] Confirm your email address.
+        /// </summary>
+        public static string EmailConfirmationSubject {
+            get {
+                return ResourceManager.GetString("EmailConfirmationSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A user with this email or username has already been registered.
         /// </summary>
-        internal static string UserDuplicateValues {
+        public static string UserDuplicateValuesError {
             get {
-                return ResourceManager.GetString("UserDuplicateValues", resourceCulture);
+                return ResourceManager.GetString("UserDuplicateValuesError", resourceCulture);
             }
         }
     }

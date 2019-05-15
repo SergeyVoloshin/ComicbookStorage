@@ -8,6 +8,7 @@ namespace ComicbookStorage.Application.Controllers
     using Base;
     using Domain.OperationResults;
     using DTOs.Account;
+    using Infrastructure.Localization;
     using Services;
 
     public class AccountController : ApplicationControllerBase
@@ -40,8 +41,7 @@ namespace ComicbookStorage.Application.Controllers
                 case UserModificationResult.Success:
                     return Ok();
                 case UserModificationResult.DuplicateValues:
-                    ModelState.AddModelError<CreateUserDto>(u => u.Email, SiteResources.UserDuplicateValues);
-                    return BadRequest(ModelState);
+                    return BadRequest<CreateUserDto>(u => u.Email, LocalizedResources.UserDuplicateValuesError);
                 default:
                     throw new InvalidOperationException(nameof(UserModificationResult));
             }
