@@ -21,6 +21,9 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.Body)
                 .IsRequired();
+
+            builder.Property(e => e.CreationTime)
+                .IsRequired();
         }
     }
 }

@@ -9,16 +9,46 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
     using System.Linq;
     using System.Threading.Tasks;
 
-    public abstract class AggregateRepositoryBase<TEntity> : EntityRepositoryBase<TEntity> where TEntity : class, IAggregateRoot
+    public abstract class RepositoryBase<TEntity> where TEntity : class, IAggregateRoot
     {
         protected readonly IQueryable<TEntity> DbSet;
 
         protected readonly ComicbookStorageContext Context;
 
-        protected AggregateRepositoryBase(ComicbookStorageContext context) : base(context)
+        protected RepositoryBase(ComicbookStorageContext context)
         {
             Context = context;
             DbSet = context.Set<TEntity>().AsNoTracking();
+        }
+
+        public Task<TEntity> GetAsync(int id)
+        {
+            return DbSet.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public void Add(TEntity entity)
+        {
+            Context.Entry(entity).State = EntityState.Added;
+        }
+
+        public void Update(TEntity entity)
+        {
+            Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(TEntity entity)
+        {
+            Context.Entry(entity).State = EntityState.Deleted;
+        }
+
+        public void AddGraph(TEntity entity)
+        {
+            TrackGraph(entity, EntityState.Unchanged);
+        }
+
+        public void UpdateGraph(TEntity entity)
+        {
+            TrackGraph(entity, EntityState.Modified);
         }
 
         public Task<TEntity> GetAggregateAsync(Specification<TEntity> specification)
@@ -86,6 +116,11 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
             }
 
             return (await query.CountAsync() > pageSize * pageNumber, entities);
+        }
+
+        private void TrackGraph(TEntity entity, EntityState existingNodeState)
+        {
+            Context.ChangeTracker.TrackGraph(entity, e => { e.Entry.State = e.Entry.IsKeySet ? existingNodeState : EntityState.Added; });
         }
     }
 }

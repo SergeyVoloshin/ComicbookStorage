@@ -20,7 +20,7 @@ namespace ComicbookStorage.Infrastructure.DI
         {
             Assembly applicationServiceAssembly = Assembly.GetAssembly(typeof(ComicbookService));
             Assembly domainServiceAssembly = Assembly.GetAssembly(typeof(ComicbookManager));
-            Assembly repositortAssembly = Assembly.GetAssembly(typeof(ComicbookRepository));
+            Assembly repositoryAssembly = Assembly.GetAssembly(typeof(ComicbookRepository));
 
             services.AddAutoMapper(applicationServiceAssembly);
 
@@ -35,15 +35,15 @@ namespace ComicbookStorage.Infrastructure.DI
                 .AsPublicImplementedInterfaces();
 
             services.RegisterAssemblyPublicNonGenericClasses(
-                    repositortAssembly)
+                    repositoryAssembly)
                 .Where(c => c.Name.EndsWith("Repository"))
                 .AsPublicImplementedInterfaces();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            PathConfiguration pathConfiguration = new PathConfiguration();
-            configuration.GetSection("PathConfiguration").Bind(pathConfiguration);
-            services.AddSingleton<IPathConfiguration>(pathConfiguration);
+            AppConfiguration appConfiguration = new AppConfiguration();
+            configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+            services.AddSingleton<IAppConfiguration>(appConfiguration);
 
             services.AddDbContext<ComicbookStorageContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }

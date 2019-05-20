@@ -1,6 +1,7 @@
 ﻿
 namespace ComicbookStorage.Domain.Core.Entities
 {
+    using Attributes;
     using Base;
     using Infrastructure.Cryptography;
 
@@ -27,8 +28,10 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public string Salt { get; private set; }
 
+        [NotPubliclyAvailable]
         public int EncryptionIterationCount { get; private set; }
 
+        [NotPubliclyAvailable]
         public string Password { get; private set; }
 
         public string ConfirmationCode { get; private set; }

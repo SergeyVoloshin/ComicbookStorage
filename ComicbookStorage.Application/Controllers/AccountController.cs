@@ -46,5 +46,11 @@ namespace ComicbookStorage.Application.Controllers
                     throw new InvalidOperationException(nameof(UserModificationResult));
             }
         }
+
+        [HttpPut("{confirmationCode}")]
+        public IActionResult ConfirmEmail(string confirmationCode)
+        {
+            return Ok();
+        }
     }
 }

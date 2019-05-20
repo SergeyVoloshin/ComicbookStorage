@@ -3,6 +3,7 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 {
     using Base;
     using Domain.Core.Entities;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     internal class EmailTemplateMap : EntityMap<EmailTemplate>
@@ -17,6 +18,12 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.Body)
                 .IsRequired();
+
+            builder.HasMany(e => e.Emails)
+                .WithOne();
+
+            builder.Metadata.FindNavigation(nameof(EmailTemplate.Emails))
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

@@ -6,8 +6,14 @@ namespace ComicbookStorage.Domain.DataAccess.Repositories.Base
     using Core.Entities.Base;
     using LinqSpecs;
 
-    public interface IAggregateRepository<TEntity> : IEntityRepository<TEntity> where TEntity : IAggregateRoot
+    public interface IRepository<TEntity> where TEntity : IAggregateRoot
     {
+        Task<TEntity> GetAsync(int id);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
+        void AddGraph(TEntity entity);
+        void UpdateGraph(TEntity entity);
         Task<ReadOnlyCollection<TEntity>> GetAllAsync();
         Task<ReadOnlyCollection<TEntity>> GetAllAsync(Specification<TEntity> specification);
         Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(Specification<TEntity> specification, uint pageNumber, uint pageSize);

@@ -18,6 +18,6 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public string CoverExtension { get; private set; }
 
-        public string SeoUrl { get; private set; }
+        public string UserFriendlyId { get; private set; }
     }
 }

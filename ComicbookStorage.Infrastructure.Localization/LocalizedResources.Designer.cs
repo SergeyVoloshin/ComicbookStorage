@@ -61,7 +61,8 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please click the link below to confirm your email:&lt;br/&gt;
+        ///   Looks up a localized string similar to You recently registered the user {User.Name} on {ApplicationName}&lt;br/&gt;
+        ///Please confirm your email by clicking the link below.&lt;br/&gt;
         ///&lt;a href=&quot;{ConfirmationLink}&quot;&gt;Confirm this email address&lt;/a&gt;.
         /// </summary>
         public static string EmailConfirmationMessage {
@@ -71,7 +72,7 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{ResourceName}] Confirm your email address.
+        ///   Looks up a localized string similar to [{ApplicationName}] Confirm your email address.
         /// </summary>
         public static string EmailConfirmationSubject {
             get {

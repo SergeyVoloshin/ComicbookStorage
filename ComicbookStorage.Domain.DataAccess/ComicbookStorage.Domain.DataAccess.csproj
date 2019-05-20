@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComicbookStorage.Domain.Core\ComicbookStorage.Domain.Core.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ComicbookStorage.Domain.Core\ComicbookStorage.Domain.Core.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

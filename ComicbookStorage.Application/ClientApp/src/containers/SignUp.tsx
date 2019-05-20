@@ -3,6 +3,7 @@ import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { InjectedFormProps, Field, reduxForm, WrappedFieldProps, FormErrors } from "redux-form";
 import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row, InputGroup, InputGroupAddon, Alert } from "reactstrap";
+import { History } from 'history';
 import { ApplicationState } from "../store/configureStore";
 import { createUserAsync, isUniqueFieldTakenAsync } from "../store/signUp/thunks";
 import { CreatedUser } from "../store/signUp/types";
@@ -10,7 +11,10 @@ import { required, email, minLength, maxLength } from "../utils/validators";
 import ErrorMessage from "../components/ErrorMessage";
 
 type SignUpProps = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps>
+    ReturnType<typeof mapDispatchToProps> &
+    {
+        history: History
+    }
 
 interface InputProps {
     id: string,
@@ -59,7 +63,7 @@ export class SignUp extends Component<InjectedFormProps<CreatedUser, SignUpProps
     }
 
     render() {
-        const { handleSubmit, submitting, signUpState } = this.props;
+        const { handleSubmit, submitting, signUpState, history } = this.props;
         return (
             <div>
                 <ErrorMessage errors={signUpState.errors} />

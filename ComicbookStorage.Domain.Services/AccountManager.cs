@@ -16,7 +16,7 @@ namespace ComicbookStorage.Domain.Services
 
         Task<bool> IsUserNameTaken(string name);
 
-        Task<UserModificationResult> CreateUser(string email, string name, string password);
+        Task<UserModificationResult> CreateUser(User newUser);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -38,13 +38,12 @@ namespace ComicbookStorage.Domain.Services
             return userRepository.ExistsAsync(new UserWithNameSpec(name));
         }
 
-        public async Task<UserModificationResult> CreateUser(string email, string name, string password)
+        public async Task<UserModificationResult> CreateUser(User newUser)
         {
             await UnitOfWork.BeginTransactionAsync(IsolationLevel.Serializable);
-            if (!await userRepository.ExistsAsync(new UserWithEmailSpec(email) || new UserWithNameSpec(name)))
+            if (!await userRepository.ExistsAsync(new UserWithEmailSpec(newUser.Email) || new UserWithNameSpec(newUser.Name)))
             {
-                var user = new User(email, name, password);
-                userRepository.Add(user);
+                userRepository.Add(newUser);
                 await UnitOfWork.SaveAsync();
                 UnitOfWork.TransactionCommit();
                 return UserModificationResult.Success;

@@ -19,8 +19,8 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
                 .IsRequired()
                 .HasMaxLength(4);
 
-            builder.HasAlternateKey(e => e.SeoUrl);
-            builder.Property(e => e.SeoUrl)
+            builder.HasAlternateKey(e => e.UserFriendlyId);
+            builder.Property(e => e.UserFriendlyId)
                 .IsRequired()
                 .HasMaxLength(100);
 

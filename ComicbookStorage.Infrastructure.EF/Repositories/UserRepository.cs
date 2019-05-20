@@ -5,7 +5,7 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories
     using Domain.Core.Entities;
     using Domain.DataAccess.Repositories;
 
-    public class UserRepository : AggregateRepositoryBase<User>, IUserRepository
+    public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         public UserRepository(ComicbookStorageContext context) : base(context)
         {

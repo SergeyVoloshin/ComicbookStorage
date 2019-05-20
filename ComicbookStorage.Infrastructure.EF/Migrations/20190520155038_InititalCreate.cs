@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InititalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,27 +17,12 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     Description = table.Column<string>(maxLength: 1024, nullable: true),
                     CoverExtension = table.Column<string>(maxLength: 4, nullable: false),
-                    SeoUrl = table.Column<string>(maxLength: 100, nullable: false)
+                    UserFriendlyId = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comicbook", x => x.Id);
-                    table.UniqueConstraint("AK_Comicbook_SeoUrl", x => x.SeoUrl);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Email",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Recipient = table.Column<string>(maxLength: 255, nullable: false),
-                    Subject = table.Column<string>(maxLength: 255, nullable: false),
-                    Body = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Email", x => x.Id);
+                    table.UniqueConstraint("AK_Comicbook_UserFriendlyId", x => x.UserFriendlyId);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,11 +59,40 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     table.UniqueConstraint("AK_User_Name", x => x.Name);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Email",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Recipient = table.Column<string>(maxLength: 255, nullable: false),
+                    Subject = table.Column<string>(maxLength: 255, nullable: false),
+                    Body = table.Column<string>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    EmailTemplateId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Email", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Email_EmailTemplate_EmailTemplateId",
+                        column: x => x.EmailTemplateId,
+                        principalTable: "EmailTemplate",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "EmailTemplate",
                 columns: new[] { "Id", "Body", "Subject" },
-                values: new object[] { 1, @"Please click the link below to confirm your email:<br/>
-<a href=""{ConfirmationLink}"">Confirm this email address</a>", "[{ResourceName}] Confirm your email address" });
+                values: new object[] { 1, @"You recently registered the user {User.Name} on {ApplicationName}<br/>
+Please confirm your email by clicking the link below.<br/>
+<a href=""{ConfirmationLink}"">Confirm this email address</a>", "[{ApplicationName}] Confirm your email address" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Email_EmailTemplateId",
+                table: "Email",
+                column: "EmailTemplateId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -89,10 +104,10 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                 name: "Email");
 
             migrationBuilder.DropTable(
-                name: "EmailTemplate");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "EmailTemplate");
         }
     }
 }

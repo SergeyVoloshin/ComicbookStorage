@@ -17,12 +17,12 @@ namespace ComicbookStorage.Application.Services
 
     public class ComicbookService : ServiceBase, IComicbookService
     {
-        private readonly IPathConfiguration pathConfig;
+        private readonly IAppConfiguration appConfig;
         private readonly IComicbookManager comicbookManager;
 
-        public ComicbookService(IPathConfiguration pathConfig, IComicbookManager comicbookManager, IMapper mapper) : base(mapper)
+        public ComicbookService(IAppConfiguration appConfig, IComicbookManager comicbookManager, IMapper mapper) : base(mapper)
         {
-            this.pathConfig = pathConfig;
+            this.appConfig = appConfig;
             this.comicbookManager = comicbookManager;
         }
 
@@ -30,7 +30,7 @@ namespace ComicbookStorage.Application.Services
         {
             var (hasMore, comicbooks) = await comicbookManager.GetPage(pageNumber, pageSize);
             var mappedComicbooks = comicbooks.Select(c => 
-                Mapper.Map(c, new ComicbookListItemDto(Url.Combine(pathConfig.ComicbookImages, c.SeoUrl, $"{pathConfig.SmallCoverName}.{c.CoverExtension}"))));
+                Mapper.Map(c, new ComicbookListItemDto(Url.Combine(appConfig.ComicbookImagePath, c.UserFriendlyId, $"{appConfig.SmallCoverName}.{c.CoverExtension}"))));
             return new ComicbookListPageDto(hasMore, mappedComicbooks);
         }
     }

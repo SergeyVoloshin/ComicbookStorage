@@ -4,9 +4,12 @@ namespace ComicbookStorage.Application.Services
     using System.Threading.Tasks;
     using AutoMapper;
     using Base;
+    using Configuration;
+    using Domain.Core.Entities;
     using Domain.OperationResults;
     using Domain.Services;
     using DTOs.Account;
+    using Flurl;
 
     public interface IAccountService : IService
     {
@@ -14,16 +17,24 @@ namespace ComicbookStorage.Application.Services
 
         Task<bool> IsUserNameTaken(string name);
 
-        Task<UserModificationResult> CreateUser(CreateUserDto newUser);
+        Task<UserModificationResult> CreateUser(CreateUserDto newUserDto);
     }
 
     public class AccountService : ServiceBase, IAccountService
     {
         private readonly IAccountManager accountManager;
+        private readonly IEmailManager emailManager;
+        private readonly IAppConfiguration appConfiguration;
 
-        public AccountService(IAccountManager accountManager, IMapper mapper) : base(mapper)
+        public AccountService(
+            IAccountManager accountManager, 
+            IEmailManager emailManager, 
+            IAppConfiguration appConfiguration,
+            IMapper mapper) : base(mapper)
         {
             this.accountManager = accountManager;
+            this.emailManager = emailManager;
+            this.appConfiguration = appConfiguration;
         }
 
         public Task<bool> IsUserEmailTaken(string email)
@@ -36,9 +47,19 @@ namespace ComicbookStorage.Application.Services
             return accountManager.IsUserNameTaken(name);
         }
 
-        public Task<UserModificationResult> CreateUser(CreateUserDto newUser)
+        public async Task<UserModificationResult> CreateUser(CreateUserDto newUserDto)
         {
-            return accountManager.CreateUser(newUser.Email, newUser.Name, newUser.Password);
+            User newUser = new User(newUserDto.Email, newUserDto.Name, newUserDto.Password);
+            var result = await accountManager.CreateUser(newUser);
+            if (result == UserModificationResult.Success)
+            {
+                await emailManager.EnqueueEmailConfirmation(
+                    newUser, 
+                    appConfiguration.ApplicationName, 
+                    Url.Combine(appConfiguration.BaseUrl, appConfiguration.ConfirmEmailUrl, newUser.ConfirmationCode));
+            }
+
+            return result;
         }
     }
 }

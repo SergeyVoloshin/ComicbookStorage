@@ -5,7 +5,7 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories
     using Domain.Core.Entities;
     using Domain.DataAccess.Repositories;
 
-    public class ComicbookRepository : AggregateRepositoryBase<Comicbook>, IComicbookRepository
+    public class ComicbookRepository : RepositoryBase<Comicbook>, IComicbookRepository
     {
         public ComicbookRepository(ComicbookStorageContext context) : base(context)
         {

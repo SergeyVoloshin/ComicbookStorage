@@ -1,6 +1,8 @@
 ﻿
 namespace ComicbookStorage.Domain.Core.Entities.Base
 {
+    using Attributes;
+
     public abstract class Entity : IEntity
     {
         protected Entity()
@@ -12,6 +14,7 @@ namespace ComicbookStorage.Domain.Core.Entities.Base
             Id = id;
         }
 
+        [NotPubliclyAvailable]
         public int Id { get; private set; }
     }
 }
