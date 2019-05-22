@@ -17,12 +17,12 @@ export interface CreateUserState {
     errors?: ValidationErrors,
 }
 
-export const CREATE_USER_RESPONSE = 'CREATE_USER_RESPONSE';
+export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
 
 export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
 
 export interface UserCreatedAction {
-    type: typeof CREATE_USER_RESPONSE,
+    type: typeof CREATE_USER_SUCCESS,
 }
 
 export interface CreateUserFailedAction {

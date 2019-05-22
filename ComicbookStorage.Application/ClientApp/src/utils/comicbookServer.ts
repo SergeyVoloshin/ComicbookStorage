@@ -1,6 +1,8 @@
 ﻿import fetch from 'cross-fetch';
 import { store } from '..';
 import { setProgressBar } from '../store/commonUi/actions';
+import messageBox from "./messageBox";
+
 
 class ComicbookServer {
     get<T>(url: string, showProgressbar: boolean = true): Promise<T> {
@@ -10,7 +12,18 @@ class ComicbookServer {
             .then(
                 response => {
                     this.checkProgressStop(showProgressbar);
+                    if (!response.ok) {
+                        messageBox.showGeneralError();
+                    }
+                    return response;
+                })
+            .then(
+                response => {
                     return response.json();
+                },
+                error => {
+                    messageBox.showGeneralError();
+                    return error;
                 }
             );
     }
@@ -31,6 +44,11 @@ class ComicbookServer {
                 response => {
                     this.checkProgressStop(showProgressbar);
                     return response;
+                }
+                ,
+                error => {
+                    messageBox.showGeneralError();
+                    return error;
                 }
             );
     }

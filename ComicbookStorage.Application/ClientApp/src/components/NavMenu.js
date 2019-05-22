@@ -2,6 +2,7 @@ import React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Nav } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import AppPathConfig from "../utils/appPathConfig";
 
 export default class NavMenu extends React.Component {
     constructor(props) {
@@ -28,13 +29,13 @@ export default class NavMenu extends React.Component {
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to={AppPathConfig.home}>Home</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/comicbooks">Comicbooks</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to={AppPathConfig.comicbooks}>Comicbooks</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/sign-up">Sign Up</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to={AppPathConfig.signUp}>Sign Up</NavLink>
                                 </NavItem>
                             </Nav>
                         </Collapse>

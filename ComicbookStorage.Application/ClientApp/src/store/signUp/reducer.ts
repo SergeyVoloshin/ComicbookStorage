@@ -1,4 +1,4 @@
-﻿import { CreateUserState, CreateUserActionTypes, CREATE_USER_RESPONSE, CREATE_USER_ERROR } from './types';
+﻿import { CreateUserState, CreateUserActionTypes, CREATE_USER_SUCCESS, CREATE_USER_ERROR } from './types';
 
 const initialState: CreateUserState = {
     errors: undefined,
@@ -9,15 +9,15 @@ export function createUserReducer(
     action: CreateUserActionTypes
 ): CreateUserState {
     switch (action.type) {
-        case CREATE_USER_RESPONSE:
+        case CREATE_USER_SUCCESS:
             return {
                 ...state,
-                errors: undefined
+                errors: undefined,
             }
         case CREATE_USER_ERROR:
             return {
                 ...state,
-                errors: action.errors
+                errors: action.errors,
             }
         default:
             return state;

@@ -29,7 +29,7 @@ const nameField: string = "name";
 export class SignUp extends Component<InjectedFormProps<CreatedUser, SignUpProps> & SignUpProps> {
 
     submit = (values: CreatedUser) => {
-        this.props.createUser(values);
+        this.props.createUser(values, this.props.history);
     }
 
     maxLength255 = maxLength(255);
@@ -63,7 +63,8 @@ export class SignUp extends Component<InjectedFormProps<CreatedUser, SignUpProps
     }
 
     render() {
-        const { handleSubmit, submitting, signUpState, history } = this.props;
+        const { handleSubmit, submitting, signUpState } = this.props;
+
         return (
             <div>
                 <ErrorMessage errors={signUpState.errors} />

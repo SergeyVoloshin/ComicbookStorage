@@ -10,6 +10,7 @@ namespace ComicbookStorage.Application.Services
     using Domain.Services;
     using DTOs.Account;
     using Flurl;
+    using Infrastructure.Localization;
 
     public interface IAccountService : IService
     {
@@ -55,7 +56,7 @@ namespace ComicbookStorage.Application.Services
             {
                 await emailManager.EnqueueEmailConfirmation(
                     newUser, 
-                    appConfiguration.ApplicationName, 
+                    LocalizedResources.ApplicationName,
                     Url.Combine(appConfiguration.BaseUrl, appConfiguration.ConfirmEmailUrl, newUser.ConfirmationCode));
             }
 

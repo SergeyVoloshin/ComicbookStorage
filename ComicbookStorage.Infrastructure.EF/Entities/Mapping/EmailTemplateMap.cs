@@ -3,6 +3,7 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 {
     using Base;
     using Domain.Core.Entities;
+    using Localization;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,6 +25,8 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Metadata.FindNavigation(nameof(EmailTemplate.Emails))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.HasData(new EmailTemplate(EmailTemplateId.EmailConfirmation, LocalizedResources.EmailConfirmationSubject, LocalizedResources.EmailConfirmationMessage));
         }
     }
 }

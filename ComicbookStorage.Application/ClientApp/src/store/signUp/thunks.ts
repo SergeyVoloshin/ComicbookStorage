@@ -1,10 +1,12 @@
 ﻿import { Dispatch } from 'redux';
 import { FormErrors } from "redux-form";
+import { History } from 'history';
 import { CreateUserActionTypes, CreatedUser, CreatedUserDto } from './types';
 import { processUserCreated, processCreateUserFailed } from './actions';
 import comicbookServer from '../../utils/comicbookServer';
+import AppPathConfig from "../../utils/appPathConfig";
 
-export const createUserAsync = (newUser: CreatedUser) => async (dispatch: Dispatch): Promise<CreateUserActionTypes> => {
+export const createUserAsync = (newUser: CreatedUser, history: History) => async (dispatch: Dispatch): Promise<CreateUserActionTypes> => {
     let newUserDto: CreatedUserDto = {
         email: newUser.email,
         name: newUser.name,
@@ -13,6 +15,7 @@ export const createUserAsync = (newUser: CreatedUser) => async (dispatch: Dispat
     let response: Response = await comicbookServer.post('/account/create-user', newUserDto, true);
 
     if (response.ok) {
+        history.push(AppPathConfig.confirmEmail);
         return dispatch(processUserCreated());
     } else {
         return dispatch(processCreateUserFailed(await response.json()));

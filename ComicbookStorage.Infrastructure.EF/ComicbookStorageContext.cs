@@ -34,13 +34,6 @@ namespace ComicbookStorage.Infrastructure.EF
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new EmailTemplateMap());
             modelBuilder.ApplyConfiguration(new EmailMap());
-
-            InitializeReferenceData(modelBuilder);
-        }
-
-        private void InitializeReferenceData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<EmailTemplate>().HasData(new EmailTemplate(EmailTemplateId.EmailConfirmation, LocalizedResources.EmailConfirmationSubject, LocalizedResources.EmailConfirmationMessage));
         }
     }
 }

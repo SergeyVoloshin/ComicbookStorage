@@ -27,6 +27,7 @@
     <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
+    <None Remove="ClientApp\src\containers\ConfirmEmail.tsx" />
     <None Remove="ClientApp\src\containers\SignUp.tsx" />
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <None Remove="ClientApp\src\index.js" />
@@ -42,7 +43,9 @@
     <None Remove="ClientApp\src\store\signUp\reducer.ts" />
     <None Remove="ClientApp\src\store\signUp\thunks.ts" />
     <None Remove="ClientApp\src\store\signUp\types.ts" />
+    <None Remove="ClientApp\src\utils\appPathConfig.ts" />
     <None Remove="ClientApp\src\utils\comicbookServer.ts" />
+    <None Remove="ClientApp\src\utils\messageBox.tsx" />
     <None Remove="ClientApp\src\utils\validators.ts" />
   </ItemGroup>
 
@@ -56,6 +59,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\components\ErrorMessage.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\ConfirmEmail.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\SignUp.tsx" />
@@ -73,7 +77,9 @@
     <TypeScriptCompile Include="ClientApp\src\store\signUp\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\utils\appPathConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\utils\comicbookServer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\utils\messageBox.tsx" />
     <TypeScriptCompile Include="ClientApp\src\utils\validators.ts" />
   </ItemGroup>
 

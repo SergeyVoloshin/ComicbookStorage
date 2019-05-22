@@ -61,6 +61,15 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comicbook Storage.
+        /// </summary>
+        public static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You recently registered the user {User.Name} on {ApplicationName}&lt;br/&gt;
         ///Please confirm your email by clicking the link below.&lt;br/&gt;
         ///&lt;a href=&quot;{ConfirmationLink}&quot;&gt;Confirm this email address&lt;/a&gt;.
