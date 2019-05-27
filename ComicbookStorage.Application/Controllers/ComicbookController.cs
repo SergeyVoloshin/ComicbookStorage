@@ -17,7 +17,7 @@ namespace ComicbookStorage.Controllers
         }
 
         [HttpGet("{pageNumber}/{pageSize}/")]
-        public async Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize)
+        public async Task<ComicbookListPageDto> GetPage(int pageNumber, int pageSize)
         {
             return await comicbookService.GetPage(pageNumber, pageSize);
         }

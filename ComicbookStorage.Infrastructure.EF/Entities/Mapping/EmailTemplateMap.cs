@@ -20,12 +20,6 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
             builder.Property(e => e.Body)
                 .IsRequired();
 
-            builder.HasMany(e => e.Emails)
-                .WithOne();
-
-            builder.Metadata.FindNavigation(nameof(EmailTemplate.Emails))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
-
             builder.HasData(new EmailTemplate(EmailTemplateId.EmailConfirmation, LocalizedResources.EmailConfirmationSubject, LocalizedResources.EmailConfirmationMessage));
         }
     }

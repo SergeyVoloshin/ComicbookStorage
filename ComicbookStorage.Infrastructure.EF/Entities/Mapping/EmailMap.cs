@@ -24,6 +24,10 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.CreationTime)
                 .IsRequired();
+
+            builder.Property(e => e.Status).IsConcurrencyToken();
+
+            builder.HasOne<EmailTemplate>().WithMany().HasForeignKey(e => e.EmailTemplateId);
         }
     }
 }

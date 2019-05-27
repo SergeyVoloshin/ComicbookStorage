@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
-    public partial class InititalCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,7 +69,10 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     Subject = table.Column<string>(maxLength: 255, nullable: false),
                     Body = table.Column<string>(nullable: false),
                     CreationTime = table.Column<DateTime>(nullable: false),
-                    EmailTemplateId = table.Column<int>(nullable: true)
+                    LastSendingAttemptTime = table.Column<DateTime>(nullable: true),
+                    LastSendingError = table.Column<string>(nullable: true),
+                    EmailTemplateId = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

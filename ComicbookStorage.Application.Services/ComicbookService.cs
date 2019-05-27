@@ -12,7 +12,7 @@ namespace ComicbookStorage.Application.Services
 
     public interface IComicbookService : IService
     {
-        Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize);
+        Task<ComicbookListPageDto> GetPage(int pageNumber, int pageSize);
     }
 
     public class ComicbookService : ServiceBase, IComicbookService
@@ -26,7 +26,7 @@ namespace ComicbookStorage.Application.Services
             this.comicbookManager = comicbookManager;
         }
 
-        public async Task<ComicbookListPageDto> GetPage(uint pageNumber, uint pageSize)
+        public async Task<ComicbookListPageDto> GetPage(int pageNumber, int pageSize)
         {
             var (hasMore, comicbooks) = await comicbookManager.GetPage(pageNumber, pageSize);
             var mappedComicbooks = comicbooks.Select(c => 

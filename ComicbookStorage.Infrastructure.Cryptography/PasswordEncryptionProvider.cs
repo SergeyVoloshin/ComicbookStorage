@@ -22,25 +22,6 @@ namespace ComicbookStorage.Infrastructure.Cryptography
             }
         }
 
-        public static string GenerateConfirmationCode(int length)
-        {
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder result = new StringBuilder();
-            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
-            {
-                byte[] uintBuffer = new byte[sizeof(uint)];
-
-                while (length-- > 0)
-                {
-                    rng.GetBytes(uintBuffer);
-                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
-                    result.Append(valid[(int)(num % (uint)valid.Length)]);
-                }
-            }
-
-            return result.ToString();
-        }
-
         public static string GenerateSalt(int length)
         {
             byte[] salt = new byte[length];
@@ -64,6 +45,30 @@ namespace ComicbookStorage.Infrastructure.Cryptography
             byte[] hashBytes = Convert.FromBase64String(hash);
             byte[] testHash = Pbkdf2(password, saltBytes, pbkdf2IterationCount, hashBytes.Length);
             return SlowEquals(hashBytes, testHash);
+        }
+
+        public static string GenerateConfirmationCode(string id, int length)
+        {
+            return $"{GetMd5(id)}{GenerateRandomString(length)}";
+        }
+
+        private static string GenerateRandomString(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder result = new StringBuilder();
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] uintBuffer = new byte[sizeof(uint)];
+
+                while (length-- > 0)
+                {
+                    rng.GetBytes(uintBuffer);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
+                    result.Append(valid[(int)(num % (uint)valid.Length)]);
+                }
+            }
+
+            return result.ToString();
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)

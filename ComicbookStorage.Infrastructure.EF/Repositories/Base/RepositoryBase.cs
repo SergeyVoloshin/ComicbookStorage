@@ -4,8 +4,7 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
     using Domain.Core.Entities.Base;
     using LinqSpecs;
     using Microsoft.EntityFrameworkCore;
-    using System;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -19,11 +18,6 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
         {
             Context = context;
             DbSet = context.Set<TEntity>().AsNoTracking();
-        }
-
-        public Task<TEntity> GetAsync(int id)
-        {
-            return DbSet.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public void Add(TEntity entity)
@@ -41,74 +35,78 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
             Context.Entry(entity).State = EntityState.Deleted;
         }
 
-        public void AddGraph(TEntity entity)
+        public void AddGraph(TEntity graph)
         {
-            TrackGraph(entity, EntityState.Unchanged);
+            TrackGraph(graph, EntityState.Unchanged);
         }
 
-        public void UpdateGraph(TEntity entity)
+        public void UpdateGraph(TEntity graph)
         {
-            TrackGraph(entity, EntityState.Modified);
+            TrackGraph(graph, EntityState.Modified);
         }
 
-        public Task<TEntity> GetAggregateAsync(Specification<TEntity> specification)
-        {
-            return GetBaseQuery().FirstOrDefaultAsync(specification);
-        }
-
-        public Task<TEntity> GetAggregateAsync(int id)
+        public Task<TEntity> GetAsync(int id)
         {
             return GetBaseQuery().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public Task<ReadOnlyCollection<TEntity>> GetAllAsync()
+        public Task<TEntity> GetAsync(Specification<TEntity> specification)
         {
-            return DbSet.ToReadOnlyCollectionAsync();
+            return GetBaseQuery().FirstOrDefaultAsync(specification);
         }
 
-        public Task<ReadOnlyCollection<TEntity>> GetAllAsync(Specification<TEntity> specification)
+        public Task<IReadOnlyList<TEntity>> GetAllAsync()
         {
-            return DbSet.Where(specification).ToReadOnlyCollectionAsync();
+            return GetBaseQuery().ToReadOnlyCollectionAsync();
         }
 
-        public Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(Specification<TEntity> specification, uint pageNumber, uint pageSize)
+        public Task<IReadOnlyList<TEntity>> GetAllAsync(Specification<TEntity> specification)
+        {
+            return GetBaseQuery().Where(specification).ToReadOnlyCollectionAsync();
+        }
+
+        public Task<IReadOnlyList<TEntity>> GetTopAsync(Specification<TEntity> specification, int count)
+        {
+            return GetBaseQuery().Where(specification).Take(count).ToReadOnlyCollectionAsync();
+        }
+
+        public Task<(bool hasMore, IReadOnlyList<TEntity> entities)> GetPageAsync(Specification<TEntity> specification, int pageNumber, int pageSize)
         {
             return GetPageAsync(true, specification, pageNumber, pageSize);
         }
 
-        public Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(uint pageNumber, uint pageSize)
+        public Task<(bool hasMore, IReadOnlyList<TEntity> entities)> GetPageAsync(int pageNumber, int pageSize)
         {
             return GetPageAsync(false, null, pageNumber, pageSize);
         }
 
-        public Task<TEntity> GetAsync(Specification<TEntity> specification)
-        {
-            return DbSet.FirstOrDefaultAsync(specification);
-        }
-
         public Task<int> CountAsync(Specification<TEntity> specification)
         {
-            return DbSet.CountAsync(specification);
-        }
-
-        public Task<bool> ExistsAsync(Specification<TEntity> specification)
-        {
-            return DbSet.Where(specification).ExistsAsync();
+            return GetBaseQuery().CountAsync(specification);
         }
 
         public Task<bool> ExistsAsync(int id)
         {
-            return DbSet.Where(e => e.Id == id).ExistsAsync();
+            return GetBaseQuery().Where(e => e.Id == id).ExistsAsync();
+        }
+
+        public Task<bool> ExistsAsync(Specification<TEntity> specification)
+        {
+            return GetBaseQuery().Where(specification).ExistsAsync();
         }
 
         protected virtual IQueryable<TEntity> GetBaseQuery()
         {
-            throw new NotImplementedException();
+            return DbSet;
         }
 
-        private async Task<(bool hasMore, ReadOnlyCollection<TEntity> entities)> GetPageAsync(bool applySpecification, Specification<TEntity> specification, uint pageNumber, uint pageSize)
+        private async Task<(bool hasMore, IReadOnlyList<TEntity> entities)> GetPageAsync(bool applySpecification, Specification<TEntity> specification, int pageNumber, int pageSize)
         {
-            IQueryable<TEntity> query = applySpecification ? DbSet.Where(specification) : DbSet;
+            IQueryable<TEntity> query = GetBaseQuery();
+            if (applySpecification)
+            {
+                query = GetBaseQuery().Where(specification);
+            }
             var entities = await query.Page(pageNumber, pageSize).ToReadOnlyCollectionAsync();
             if (entities.Count < pageSize)
             {
@@ -118,9 +116,9 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
             return (await query.CountAsync() > pageSize * pageNumber, entities);
         }
 
-        private void TrackGraph(TEntity entity, EntityState existingNodeState)
+        private void TrackGraph(TEntity graph, EntityState existingNodeState)
         {
-            Context.ChangeTracker.TrackGraph(entity, e => { e.Entry.State = e.Entry.IsKeySet ? existingNodeState : EntityState.Added; });
+            Context.ChangeTracker.TrackGraph(graph, e => { e.Entry.State = e.Entry.IsKeySet ? existingNodeState : EntityState.Added; });
         }
     }
 }

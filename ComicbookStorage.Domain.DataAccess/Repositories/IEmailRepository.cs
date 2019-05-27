@@ -5,8 +5,8 @@ namespace ComicbookStorage.Domain.DataAccess.Repositories
     using Base;
     using Core.Entities;
 
-    public interface IEmailTemplateRepository : IRepository<EmailTemplate>
+    public interface IEmailRepository : IRepository<Email>
     {
-        Task<EmailTemplate> GetAsync(EmailTemplateId id);
+        Task<EmailTemplate> GetEmailTemplateAsync(EmailTemplateId id);
     }
 }

@@ -18,13 +18,13 @@ namespace ComicbookStorage.Domain.Services
         private const string ApplicationNameKey = "{ApplicationName}";
         private const string ConfirmationLinkKey = "{ConfirmationLink}";
 
-        private readonly IEmailTemplateRepository emailTemplateRepository;
+        private readonly IEmailRepository emailRepository;
 
         public EmailManager(
-            IEmailTemplateRepository emailTemplateRepository,
+            IEmailRepository emailRepository,
             IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.emailTemplateRepository = emailTemplateRepository;
+            this.emailRepository = emailRepository;
         }
 
         public async Task EnqueueEmailConfirmation(User user, string applicationName, string confirmationUrl)
@@ -34,9 +34,9 @@ namespace ComicbookStorage.Domain.Services
                 {ApplicationNameKey, applicationName},
                 {ConfirmationLinkKey, confirmationUrl}
             };
-            var template = await emailTemplateRepository.GetAsync((int)EmailTemplateId.EmailConfirmation);
-            template.AddEmail(user.Email, fields, user);
-            emailTemplateRepository.AddGraph(template);
+            var template = await emailRepository.GetEmailTemplateAsync(EmailTemplateId.EmailConfirmation);
+            Email email = template.CreateEmail(user.Email, fields, user);
+            emailRepository.Add(email);
             await UnitOfWork.SaveAsync();
         }
     }

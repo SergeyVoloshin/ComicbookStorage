@@ -10,10 +10,8 @@ namespace ComicbookStorage.Domain.Core.Entities
     using Attributes;
     using Base;
 
-    public class EmailTemplate : Entity, IAggregateRoot
+    public class EmailTemplate : Entity
     {
-        private readonly List<Email> emails = new List<Email>();
-
         public EmailTemplate(EmailTemplateId id, string subject, string body) : this((int)id, subject, body)
         {
         }
@@ -28,14 +26,12 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public string Body { get; private set; }
 
-        public IEnumerable<Email> Emails => emails.AsReadOnly();
-
-        public void AddEmail(string recipient, params IEntity[] entities)
+        public Email CreateEmail(string recipient, params IEntity[] entities)
         {
-            AddEmail(recipient, null, entities);
+            return CreateEmail(recipient, null, entities);
         }
 
-        public void AddEmail(string recipient, IReadOnlyDictionary<string, string> emailFields, params IEntity[] entities)
+        public Email CreateEmail(string recipient, IReadOnlyDictionary<string, string> emailFields, params IEntity[] entities)
         {
             var subject = new StringBuilder(Subject);
             var body = new StringBuilder(Body);
@@ -64,7 +60,7 @@ namespace ComicbookStorage.Domain.Core.Entities
                 }
             }
             
-            emails.Add(new Email(recipient, subject.ToString(), body.ToString()));
+            return new Email(recipient, subject.ToString(), body.ToString(), Id);
         }
     }
 }

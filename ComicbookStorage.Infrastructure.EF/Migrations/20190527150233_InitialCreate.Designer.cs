@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190520155038_InititalCreate")]
-    partial class InititalCreate
+    [Migration("20190527150233_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,9 +62,16 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
 
                     b.Property<int?>("EmailTemplateId");
 
+                    b.Property<DateTime?>("LastSendingAttemptTime");
+
+                    b.Property<string>("LastSendingError");
+
                     b.Property<string>("Recipient")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<int>("Status")
+                        .IsConcurrencyToken();
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -144,7 +151,7 @@ Please confirm your email by clicking the link below.<br/>
             modelBuilder.Entity("ComicbookStorage.Domain.Core.Entities.Email", b =>
                 {
                     b.HasOne("ComicbookStorage.Domain.Core.Entities.EmailTemplate")
-                        .WithMany("Emails")
+                        .WithMany()
                         .HasForeignKey("EmailTemplateId");
                 });
 #pragma warning restore 612, 618
