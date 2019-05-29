@@ -6,12 +6,12 @@ import messageBox from "./messageBox";
 
 class ComicbookServer {
     get<T>(url: string, showProgressbar: boolean = true): Promise<T> {
-        this.checkProgressStart(showProgressbar);
+        checkProgressStart(showProgressbar);
 
         return fetch(url)
             .then(
                 response => {
-                    this.checkProgressStop(showProgressbar);
+                    checkProgressStop(showProgressbar);
                     if (!response.ok) {
                         messageBox.showGeneralError();
                     }
@@ -29,40 +29,48 @@ class ComicbookServer {
     }
 
     post<T>(url: string, data: T, showProgressbar: boolean = true): Promise<Response> {
-        this.checkProgressStart(showProgressbar);
-
-        return fetch(url,
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
-            })
-            .then(
-                response => {
-                    this.checkProgressStop(showProgressbar);
-                    return response;
-                }
-                ,
-                error => {
-                    messageBox.showGeneralError();
-                    return error;
-                }
-            );
+        return sendJson(url, data, "POST", showProgressbar);
     }
 
-    checkProgressStart(showProgressbar: boolean) {
-        if (showProgressbar) {
-            store.dispatch(setProgressBar(true));
-        }
+    put<T>(url: string, data: T, showProgressbar: boolean = true): Promise<Response> {
+        return sendJson(url, data, "PUT", showProgressbar);
     }
+}
 
-    checkProgressStop(showProgressbar: boolean) {
-        if (showProgressbar) {
-            store.dispatch(setProgressBar(false));
-        }
+const sendJson = <T>(url: string, data: T, method: string, showProgressbar: boolean): Promise<Response> => {
+    checkProgressStart(showProgressbar);
+
+    return fetch(url,
+        {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: data ? JSON.stringify(data) : null,
+        })
+        .then(
+            response => {
+                checkProgressStop(showProgressbar);
+                return response;
+            }
+            ,
+            error => {
+                messageBox.showGeneralError();
+                return error;
+            }
+        );
+}
+
+const checkProgressStart = (showProgressbar: boolean) => {
+    if (showProgressbar) {
+        store.dispatch(setProgressBar(true));
+    }
+}
+
+const checkProgressStop = (showProgressbar: boolean) => {
+    if (showProgressbar) {
+        store.dispatch(setProgressBar(false));
     }
 }
 

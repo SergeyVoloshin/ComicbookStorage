@@ -19,7 +19,7 @@ namespace ComicbookStorage.Domain.Core.Entities.Specifications.Email
         public override Expression<Func<Email, bool>> ToExpression()
         {
             return e => e.Status == EmailStatus.Created ||
-                        (e.Status == EmailStatus.Error || e.Status == EmailStatus.Sending) && (DateTime.Now - e.LastSendingAttemptTime.Value).TotalMinutes > errorResendIntervalMinutes;
+                        e.Status == EmailStatus.Sending && (DateTime.Now - e.LastSendingAttemptTime.Value).TotalMinutes > errorResendIntervalMinutes;
         }
     }
 }

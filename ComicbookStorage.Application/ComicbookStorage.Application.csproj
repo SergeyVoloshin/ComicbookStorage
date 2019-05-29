@@ -26,6 +26,7 @@
     <None Remove="ClientApp\src\components\ErrorMessage.tsx" />
     <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
+    <None Remove="ClientApp\src\containers\CheckEmailConfirmationCode.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
     <None Remove="ClientApp\src\containers\ConfirmEmail.tsx" />
     <None Remove="ClientApp\src\containers\SignUp.tsx" />
@@ -39,6 +40,10 @@
     <None Remove="ClientApp\src\store\commonUi\reducer.ts" />
     <None Remove="ClientApp\src\store\commonUi\types.ts" />
     <None Remove="ClientApp\src\store\common\types.ts" />
+    <None Remove="ClientApp\src\store\emailConfirmationCode\actions.ts" />
+    <None Remove="ClientApp\src\store\emailConfirmationCode\reducer.ts" />
+    <None Remove="ClientApp\src\store\emailConfirmationCode\thunks.ts" />
+    <None Remove="ClientApp\src\store\emailConfirmationCode\types.ts" />
     <None Remove="ClientApp\src\store\signUp\actions.ts" />
     <None Remove="ClientApp\src\store\signUp\reducer.ts" />
     <None Remove="ClientApp\src\store\signUp\thunks.ts" />
@@ -62,6 +67,7 @@
     <TypeScriptCompile Include="ClientApp\src\containers\ConfirmEmail.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\CheckEmailConfirmationCode.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\SignUp.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\index.js" />
@@ -73,6 +79,10 @@
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\commonUi\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\common\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\emailConfirmationCode\actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\emailConfirmationCode\thunks.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\emailConfirmationCode\reducer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\emailConfirmationCode\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />
