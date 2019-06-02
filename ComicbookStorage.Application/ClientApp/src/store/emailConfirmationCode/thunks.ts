@@ -5,7 +5,7 @@ import { processEmailConfirmed, processConfirmEmailFailed } from './actions';
 import comicbookServer from '../../utils/comicbookServer';
 import AppPathConfig from "../../utils/appPathConfig";
 
-export const createUserAsync = (confirmationCode: string, history: History) => async (dispatch: Dispatch): Promise<ConfirmEmailActionTypes> => {
+export const confirmEmailAsync = (confirmationCode: string, history: History) => async (dispatch: Dispatch): Promise<ConfirmEmailActionTypes> => {
     let response: Response = await comicbookServer.put(`/account/confirm-email/${confirmationCode}`, false);
 
     if (response.ok) {

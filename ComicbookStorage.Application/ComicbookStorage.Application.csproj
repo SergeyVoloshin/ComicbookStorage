@@ -29,6 +29,7 @@
     <None Remove="ClientApp\src\containers\CheckEmailConfirmationCode.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
     <None Remove="ClientApp\src\containers\ConfirmEmail.tsx" />
+    <None Remove="ClientApp\src\containers\LogIn.tsx" />
     <None Remove="ClientApp\src\containers\SignUp.tsx" />
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <None Remove="ClientApp\src\index.js" />
@@ -65,6 +66,7 @@
     <TypeScriptCompile Include="ClientApp\src\components\ErrorMessage.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ConfirmEmail.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\LogIn.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ComicbookList.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\CheckEmailConfirmationCode.tsx" />

@@ -7,16 +7,19 @@ import { History } from 'history';
 import { comicbookListReducer } from './comicbookList/reducer';
 import { progressBarReducer } from './commonUi/reducer';
 import { createUserReducer } from './signUp/reducer';
+import { confirmEmailReducer } from './emailConfirmationCode/reducer';
 import { ComicbookListState } from './comicbookList/types';
 import { CommonUiState } from './commonUi/types';
 import { CreateUserState } from './signUp/types';
+import { ConfirmEmailState } from './emailConfirmationCode/types';
 
 export default function configureStore(history: History, initialState: ApplicationState): Store<ApplicationState> {
     const reducers = {
         form: formReducer,
         comicbookList: comicbookListReducer,
         signUp: createUserReducer,
-        commonUi: progressBarReducer
+        commonUi: progressBarReducer,
+        confirmEmail: confirmEmailReducer,
     };
 
     let middleware = applyMiddleware(thunk, routerMiddleware(history));
@@ -42,4 +45,5 @@ export type ApplicationState = Readonly<{
     signUp: CreateUserState,
     commonUi: CommonUiState,
     router: RouterState,
+    confirmEmail: ConfirmEmailState,
 }>

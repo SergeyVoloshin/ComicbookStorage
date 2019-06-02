@@ -1,12 +1,47 @@
-﻿import React from 'react';
+﻿import React, { Component } from 'react';
+import { bindActionCreators, Dispatch } from "redux";
 import { connect } from 'react-redux';
+import { History } from 'history';
+import { match } from "react-router-dom";
+import { ApplicationState } from '../store/configureStore';
+import { confirmEmailAsync } from '../store/emailConfirmationCode/thunks';
+import ErrorMessage from "../components/ErrorMessage";
 
-const CheckEmailConfirmationCode = () => (
-    <div>
-        <h3>Almost There... Check Your Email!</h3>
-        <p>We have sent you a confirmation email. Before we can log you in we need to be sure the address you used was correctly entered.</p>
-        <p>Check your inbox and click the link to confirm.</p>
-    </div>
+type EmailConfirmationProps = ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps> &
+{
+    history: History,
+    match: match<RouteParams>,
+}
+
+interface RouteParams { code: string; }
+
+export class CheckEmailConfirmationCode extends Component<EmailConfirmationProps> {
+
+    componentDidMount() {
+        const { confirmEmail, match, history } = this.props;
+        confirmEmail(match.params.code, history);
+    }
+    render() {
+        const { confirmationState } = this.props;
+
+        if (confirmationState.errors) {
+            return (<ErrorMessage errors={confirmationState.errors} />);
+        }
+        return (<div>Confirming the email...</div>);
+    }
+
+}
+
+const mapStateToProps = (state: ApplicationState) => {
+    return { confirmationState: state.confirmEmail, }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
+    {
+        confirmEmail: confirmEmailAsync,
+    },
+    dispatch
 );
 
-export default connect()(CheckEmailConfirmationCode);
+export default connect(mapStateToProps, mapDispatchToProps)(CheckEmailConfirmationCode);
