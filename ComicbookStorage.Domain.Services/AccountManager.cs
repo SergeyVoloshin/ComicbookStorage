@@ -17,6 +17,8 @@ namespace ComicbookStorage.Domain.Services
         Task<bool> IsUserNameTaken(string name);
 
         Task<UserModificationResult> CreateUser(User newUser);
+
+        Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -51,6 +53,23 @@ namespace ComicbookStorage.Domain.Services
 
             UnitOfWork.TransactionRollback();
             return UserModificationResult.DuplicateValues;
+        }
+
+        public async Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode)
+        {
+            User user = await userRepository.GetEntityAsync(new UserWithConfirmationCode(confirmationCode));
+            if (user != null)
+            {
+                if (!user.IsEmailConfirmed)
+                {
+                    user.IsEmailConfirmed = true;
+                    userRepository.Update(user);
+                    await UnitOfWork.SaveAsync();
+                    return EmailConfirmationResult.Success;
+                }
+                return EmailConfirmationResult.AlreadyConfirmed;
+            }
+            return EmailConfirmationResult.UserNotFound;
         }
     }
 }

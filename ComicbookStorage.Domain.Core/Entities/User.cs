@@ -35,5 +35,7 @@ namespace ComicbookStorage.Domain.Core.Entities
         public string Password { get; private set; }
 
         public string ConfirmationCode { get; private set; }
+
+        public bool IsEmailConfirmed { get; set; }
     }
 }

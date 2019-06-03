@@ -70,6 +70,15 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The confirmation code is not valid.
+        /// </summary>
+        public static string EmailConfirmationCodeNotFound {
+            get {
+                return ResourceManager.GetString("EmailConfirmationCodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You recently registered the user {User.Name} on {ApplicationName}&lt;br/&gt;
         ///Please confirm your email by clicking the link below.&lt;br/&gt;
         ///&lt;a href=&quot;{ConfirmationLink}&quot;&gt;Confirm this email address&lt;/a&gt;.
@@ -95,6 +104,15 @@ namespace ComicbookStorage.Infrastructure.Localization {
         public static string UserDuplicateValuesError {
             get {
                 return ResourceManager.GetString("UserDuplicateValuesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The email address this confirmation code refers to has already been confirmed. Please try to log in.
+        /// </summary>
+        public static string UserEmailIsAlreadyConfirmed {
+            get {
+                return ResourceManager.GetString("UserEmailIsAlreadyConfirmed", resourceCulture);
             }
         }
     }

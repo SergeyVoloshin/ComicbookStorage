@@ -8,7 +8,8 @@ namespace ComicbookStorage.Domain.DataAccess.Repositories.Base
 
     public interface IRepository<TEntity> where TEntity : IAggregateRoot
     {
-        
+        Task<TEntity> GetEntityAsync(int id);
+        Task<TEntity> GetEntityAsync(Specification<TEntity> specification);
         void Add(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);

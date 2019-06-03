@@ -125,6 +125,8 @@ Please confirm your email by clicking the link below.<br/>
 
                     b.Property<int>("EncryptionIterationCount");
 
+                    b.Property<bool>("IsEmailConfirmed");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);

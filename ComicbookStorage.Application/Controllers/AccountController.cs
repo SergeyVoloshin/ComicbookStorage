@@ -2,6 +2,7 @@
 namespace ComicbookStorage.Application.Controllers
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
     using Base;
@@ -47,9 +48,20 @@ namespace ComicbookStorage.Application.Controllers
         }
 
         [HttpPut("{confirmationCode}")]
-        public IActionResult ConfirmEmail(string confirmationCode)
+        public async Task<IActionResult> ConfirmEmail(string confirmationCode)
         {
-            return Ok();
+            var result = await accountService.ConfirmEmail(confirmationCode);
+            switch (result)
+            {
+                case EmailConfirmationResult.Success:
+                    return Ok();
+                case EmailConfirmationResult.UserNotFound:
+                    return BadRequest(nameof(confirmationCode), LocalizedResources.EmailConfirmationCodeNotFound);
+                case EmailConfirmationResult.AlreadyConfirmed:
+                    return BadRequest(nameof(confirmationCode), LocalizedResources.UserEmailIsAlreadyConfirmed);
+                default:
+                    throw new InvalidOperationException(nameof(EmailConfirmationResult));
+            }
         }
     }
 }

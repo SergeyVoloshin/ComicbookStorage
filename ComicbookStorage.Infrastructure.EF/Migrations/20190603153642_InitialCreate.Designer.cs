@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190527150233_InitialCreate")]
+    [Migration("20190603153642_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,8 @@ Please confirm your email by clicking the link below.<br/>
                         .HasMaxLength(255);
 
                     b.Property<int>("EncryptionIterationCount");
+
+                    b.Property<bool>("IsEmailConfirmed");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -20,6 +20,16 @@ namespace ComicbookStorage.Infrastructure.EF.Repositories.Base
             DbSet = context.Set<TEntity>().AsNoTracking();
         }
 
+        public Task<TEntity> GetEntityAsync(int id)
+        {
+            return DbSet.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public Task<TEntity> GetEntityAsync(Specification<TEntity> specification)
+        {
+            return DbSet.FirstOrDefaultAsync(specification);
+        }
+
         public void Add(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Added;

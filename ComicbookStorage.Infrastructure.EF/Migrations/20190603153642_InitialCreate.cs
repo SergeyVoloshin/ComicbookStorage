@@ -50,7 +50,8 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     Salt = table.Column<string>(maxLength: 255, nullable: false),
                     EncryptionIterationCount = table.Column<int>(nullable: false),
                     Password = table.Column<string>(maxLength: 255, nullable: false),
-                    ConfirmationCode = table.Column<string>(maxLength: 255, nullable: true)
+                    ConfirmationCode = table.Column<string>(maxLength: 255, nullable: true),
+                    IsEmailConfirmed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

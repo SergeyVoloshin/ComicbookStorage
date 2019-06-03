@@ -34,6 +34,9 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.ConfirmationCode)
                 .HasMaxLength(255);
+
+            builder.Property(e => e.IsEmailConfirmed)
+                .IsRequired();
         }
     }
 }

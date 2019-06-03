@@ -19,6 +19,8 @@ namespace ComicbookStorage.Application.Services
         Task<bool> IsUserNameTaken(string name);
 
         Task<UserModificationResult> CreateUser(CreateUserDto newUserDto);
+
+        Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
     }
 
     public class AccountService : ServiceBase, IAccountService
@@ -61,6 +63,11 @@ namespace ComicbookStorage.Application.Services
             }
 
             return result;
+        }
+
+        public Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode)
+        {
+            return accountManager.ConfirmEmail(confirmationCode);
         }
     }
 }
