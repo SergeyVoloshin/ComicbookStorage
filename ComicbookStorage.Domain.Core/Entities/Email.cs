@@ -7,17 +7,17 @@ namespace ComicbookStorage.Domain.Core.Entities
     public class Email : Entity, IAggregateRoot
     {
         public Email(string recipient, string subject, string body, int? emailTemplateId = null) 
-            : this(recipient, subject, body, DateTime.Now, emailTemplateId)
-        {
-            Status = EmailStatus.Created;
-        }
-
-        private Email(string recipient, string subject, string body, DateTime creationTime, int? emailTemplateId)
         {
             Recipient = recipient;
             Subject = subject;
             Body = body;
-            CreationTime = creationTime;
+            EmailTemplateId = emailTemplateId;
+            Status = EmailStatus.Created;
+            CreationTime = DateTime.Now;
+        }
+
+        private Email()
+        {
         }
 
         public string Recipient { get; private set; }

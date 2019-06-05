@@ -131,6 +131,9 @@ Please confirm your email by clicking the link below.&lt;br/&gt;
   <data name="EmailConfirmationSubject" xml:space="preserve">
     <value>[{ApplicationName}] Confirm your email address</value>
   </data>
+  <data name="UserAuthenticationError" xml:space="preserve">
+    <value>The email or password is incorrect. Or maybe you forgot to confirm your email</value>
+  </data>
   <data name="UserDuplicateValuesError" xml:space="preserve">
     <value>A user with this email or username has already been registered</value>
   </data>

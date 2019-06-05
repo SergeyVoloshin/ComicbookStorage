@@ -99,6 +99,15 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email or password is incorrect. Or maybe you forgot to confirm your email.
+        /// </summary>
+        public static string UserAuthenticationError {
+            get {
+                return ResourceManager.GetString("UserAuthenticationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A user with this email or username has already been registered.
         /// </summary>
         public static string UserDuplicateValuesError {

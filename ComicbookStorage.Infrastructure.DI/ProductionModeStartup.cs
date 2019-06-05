@@ -9,9 +9,11 @@ namespace ComicbookStorage.Infrastructure.DI
     using Domain.Services;
     using EF;
     using EF.Repositories;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
     using NetCore.AutoRegisterDi;
 
     public static class ProductionModeStartup
@@ -44,6 +46,27 @@ namespace ComicbookStorage.Infrastructure.DI
             AppConfiguration appConfiguration = new AppConfiguration();
             configuration.GetSection("AppConfiguration").Bind(appConfiguration);
             services.AddSingleton<IAppConfiguration>(appConfiguration);
+
+            SecurityConfiguration securityConfiguration = new SecurityConfiguration();
+            configuration.GetSection("SecurityConfiguration").Bind(securityConfiguration);
+            services.AddSingleton<ISecurityConfiguration>(securityConfiguration);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = securityConfiguration.RequireHttpsMetadata;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = securityConfiguration.GetDecodingKey(),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddDbContext<ComicbookStorageContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }

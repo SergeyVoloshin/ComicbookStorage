@@ -2,13 +2,13 @@
 namespace ComicbookStorage.Application.Controllers
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
     using Base;
     using Domain.OperationResults;
     using DTOs.Account;
     using Infrastructure.Localization;
+    using Microsoft.AspNetCore.Authorization;
     using Services;
 
     public class AccountController : ApplicationControllerBase
@@ -62,6 +62,17 @@ namespace ComicbookStorage.Application.Controllers
                 default:
                     throw new InvalidOperationException(nameof(EmailConfirmationResult));
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LogInDto request)
+        {
+            var token = await accountService.Authenticate(request);
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest<LogInDto>(r => r.Password, LocalizedResources.UserAuthenticationError);
+            }
+            return Ok(token);
         }
     }
 }

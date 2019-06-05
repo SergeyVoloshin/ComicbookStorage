@@ -18,8 +18,12 @@ namespace ComicbookStorage.Domain.Core.Entities
             Name = name.Trim();
             Salt = PasswordEncryptionProvider.GenerateSalt(DefaultSaltLength);
             EncryptionIterationCount = DefaultIterationCount;
-            Password = PasswordEncryptionProvider.CreateHash(password, Salt, EncryptionIterationCount, DefaultHashLength);
+            Password = GetEncryptedPassword(password);
             ConfirmationCode = PasswordEncryptionProvider.GenerateConfirmationCode(Email, DefaultConfirmationCodeLength);
+        }
+
+        private User()
+        {
         }
 
         public string Email { get; private set; }
@@ -37,5 +41,15 @@ namespace ComicbookStorage.Domain.Core.Entities
         public string ConfirmationCode { get; private set; }
 
         public bool IsEmailConfirmed { get; set; }
+
+        public bool VerifyPassword(string password)
+        {
+            return IsEmailConfirmed && GetEncryptedPassword(password) == Password;
+        }
+
+        private string GetEncryptedPassword(string password)
+        {
+            return PasswordEncryptionProvider.CreateHash(password, Salt, EncryptionIterationCount, DefaultHashLength);
+        }
     }
 }

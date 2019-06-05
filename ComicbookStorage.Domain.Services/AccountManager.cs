@@ -19,6 +19,8 @@ namespace ComicbookStorage.Domain.Services
         Task<UserModificationResult> CreateUser(User newUser);
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
+
+        Task<bool> CheckCredentials(string email, string password);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -71,5 +73,17 @@ namespace ComicbookStorage.Domain.Services
             }
             return EmailConfirmationResult.UserNotFound;
         }
+
+        public async Task<bool> CheckCredentials(string email, string password)
+        {
+            var user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
+            if (user != null)
+            {
+                return user.VerifyPassword(password);
+            }
+
+            return false;
+        }
+
     }
 }
