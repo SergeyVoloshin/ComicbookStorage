@@ -5,4 +5,6 @@
     public static readonly signUp = '/sign-up';
     public static readonly sendEmailConfirmationCode = '/confirm-email/:code';
     public static readonly logIn = '/log-in';
+    public static readonly logOut = '/log-out';
+    public static readonly addComicbook = '/add-comicbook';
 }

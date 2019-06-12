@@ -12,7 +12,7 @@ export const createUserAsync = (newUser: CreatedUser, history: History) => async
         name: newUser.name,
         password: newUser.password
     }
-    let response: Response = await comicbookServer.post('/account/create-user', newUserDto, true);
+    let response: Response = await comicbookServer.post('/account/create-user', newUserDto, false, true);
 
     if (response.ok) {
         history.push(AppPathConfig.confirmEmail);
@@ -23,7 +23,7 @@ export const createUserAsync = (newUser: CreatedUser, history: History) => async
 }
 
 export const isUniqueFieldTakenAsync = (fieldName: string, fieldValue: string, existingErrors: FormErrors<CreatedUser>): Promise<boolean> => {
-    return comicbookServer.get<boolean>(`/account/is-${fieldName}-taken/${fieldValue}`, false)
+    return comicbookServer.get<boolean>(`/account/is-${fieldName}-taken/${fieldValue}`, false, false)
         .then(result => {
             if (result) {
                 throw {

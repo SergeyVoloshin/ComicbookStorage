@@ -8,7 +8,6 @@ namespace ComicbookStorage.Application.Controllers
     using Domain.OperationResults;
     using DTOs.Account;
     using Infrastructure.Localization;
-    using Microsoft.AspNetCore.Authorization;
     using Services;
 
     public class AccountController : ApplicationControllerBase

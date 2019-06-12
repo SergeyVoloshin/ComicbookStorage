@@ -2,8 +2,9 @@
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { InjectedFormProps, Field, reduxForm, WrappedFieldProps, FormErrors } from "redux-form";
-import { Form, FormGroup, Label, Button, FormText, Col, Input, FormFeedback, Spinner, Row, InputGroup, InputGroupAddon, Alert } from "reactstrap";
+import { Form, Button, Col, Row } from "reactstrap";
 import { History } from 'history';
+import InputField, { InputProps } from "../components/InputField";
 import { ApplicationState } from "../store/configureStore";
 import { createUserAsync, isUniqueFieldTakenAsync } from "../store/signUp/thunks";
 import { CreatedUser } from "../store/signUp/types";
@@ -12,15 +13,8 @@ import ErrorMessage from "../components/ErrorMessage";
 
 type SignUpProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
-    {
-        history: History
-    }
-
-interface InputProps {
-    id: string,
-    placeholder?: string,
-    type: string,
-    formText?: string,
+{
+    history: History
 }
 
 const emailField: string = "email";
@@ -37,29 +31,7 @@ export class SignUp extends Component<InjectedFormProps<CreatedUser, SignUpProps
     minLength5 = minLength(5);
 
     renderField = (fieldProperties: WrappedFieldProps & InputProps): JSX.Element => {
-        let displayError = fieldProperties.meta.touched && typeof fieldProperties.meta.error !== 'undefined';
-        return (
-            <Row form>
-                <Col md={8}>
-                    <FormGroup>
-                        <Label for={fieldProperties.id}>{fieldProperties.label}</Label>
-                        <InputGroup className="flex-wrap">
-                            <Input
-                                {...fieldProperties.input}
-                                id={fieldProperties.id}
-                                type={fieldProperties.type}
-                                placeholder={fieldProperties.placeholder}
-                                invalid={displayError} />
-                            {fieldProperties.meta.asyncValidating && <InputGroupAddon addonType="append" className="d-inline-block align-middle mt-1 ml-n4">
-                                <Spinner size="sm" type="grow" color="primary" />
-                            </InputGroupAddon>}
-                            {displayError && <FormFeedback className="w-100">{fieldProperties.meta.error}</FormFeedback>}
-                        </InputGroup>
-                        {typeof fieldProperties.formText !== "undefined" && <FormText color="muted">{fieldProperties.formText}</FormText>}
-                    </FormGroup>
-                </Col>
-            </Row>
-        );
+        return (<InputField {...fieldProperties} />);
     }
 
     render() {

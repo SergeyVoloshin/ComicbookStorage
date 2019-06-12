@@ -6,7 +6,7 @@ import comicbookServer from '../../utils/comicbookServer';
 import AppPathConfig from "../../utils/appPathConfig";
 
 export const confirmEmailAsync = (confirmationCode: string, history: History) => async (dispatch: Dispatch): Promise<ConfirmEmailActionTypes> => {
-    let response: Response = await comicbookServer.put(`/account/confirm-email/${confirmationCode}`, false);
+    let response: Response = await comicbookServer.put(`/account/confirm-email/${confirmationCode}`, null, false, false);
 
     if (response.ok) {
         history.push(AppPathConfig.logIn);
