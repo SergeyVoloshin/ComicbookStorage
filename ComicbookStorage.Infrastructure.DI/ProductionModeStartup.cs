@@ -59,13 +59,7 @@ namespace ComicbookStorage.Infrastructure.DI
             {
                 x.RequireHttpsMetadata = securityConfiguration.RequireHttpsMetadata;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = securityConfiguration.GetDecodingKey(),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                x.TokenValidationParameters = securityConfiguration.GeTokenValidationParameters();
             });
 
             services.AddDbContext<ComicbookStorageContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

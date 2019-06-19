@@ -14,11 +14,13 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50);
+
             builder.HasAlternateKey(e => e.Name);
 
             builder.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255);
+
             builder.HasAlternateKey(e => e.Email);
 
             builder.Property(e => e.Password)
@@ -37,6 +39,9 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
 
             builder.Property(e => e.IsEmailConfirmed)
                 .IsRequired();
+
+            builder.Property(e => e.RefreshToken)
+                .HasMaxLength(128);
         }
     }
 }

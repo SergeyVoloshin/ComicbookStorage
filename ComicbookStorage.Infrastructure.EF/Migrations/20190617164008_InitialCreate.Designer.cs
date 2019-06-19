@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20190603153642_InitialCreate")]
+    [Migration("20190617164008_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,9 +137,16 @@ Please confirm your email by clicking the link below.<br/>
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime?>("RefreshTokenExpirationTime");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<string>("UserAgent");
 
                     b.HasKey("Id");
 

@@ -99,6 +99,15 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The tokens cannot be updated.
+        /// </summary>
+        public static string RefreshTokenError {
+            get {
+                return ResourceManager.GetString("RefreshTokenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The email or password is incorrect. Or maybe you forgot to confirm your email.
         /// </summary>
         public static string UserAuthenticationError {

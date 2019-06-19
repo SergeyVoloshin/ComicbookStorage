@@ -1,6 +1,7 @@
 ﻿
 namespace ComicbookStorage.Domain.Services
 {
+    using System;
     using System.Data;
     using System.Threading.Tasks;
     using Base;
@@ -20,7 +21,9 @@ namespace ComicbookStorage.Domain.Services
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
 
-        Task<bool> CheckCredentials(string email, string password);
+        Task<string> Authorize(string email, string password, string userAgent, double tokenLifeTimeMinutes);
+
+        Task<string> RefreshToken(string email, string userRefreshToken, string userAgent, double tokenLifeTimeMinutes);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -74,16 +77,28 @@ namespace ComicbookStorage.Domain.Services
             return EmailConfirmationResult.UserNotFound;
         }
 
-        public async Task<bool> CheckCredentials(string email, string password)
+        public Task<string> Authorize(string email, string password, string userAgent, double tokenLifeTimeMinutes)
         {
-            var user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
-            if (user != null)
-            {
-                return user.VerifyPassword(password);
-            }
-
-            return false;
+            return Authorize(email, userAgent, tokenLifeTimeMinutes, user => user.VerifyPassword(password));
         }
 
+        public Task<string> RefreshToken(string email, string userRefreshToken, string userAgent, double tokenLifeTimeMinutes)
+        {
+            return Authorize(email, userAgent, tokenLifeTimeMinutes, user => user.VerifyRefreshToken(userAgent, userRefreshToken));
+        }
+
+        private async Task<string> Authorize(string email, string userAgent, double tokenLifeTimeMinutes, Func<User, bool> verify)
+        {
+            var user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
+            if (user != null && verify(user))
+            {
+                user.GenerateRefreshToken(userAgent, tokenLifeTimeMinutes);
+                userRepository.Update(user);
+                await UnitOfWork.SaveAsync();
+                return user.RefreshToken;
+            }
+
+            return null;
+        }
     }
 }

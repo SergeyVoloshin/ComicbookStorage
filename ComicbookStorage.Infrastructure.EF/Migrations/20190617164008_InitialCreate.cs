@@ -51,7 +51,10 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                     EncryptionIterationCount = table.Column<int>(nullable: false),
                     Password = table.Column<string>(maxLength: 255, nullable: false),
                     ConfirmationCode = table.Column<string>(maxLength: 255, nullable: true),
-                    IsEmailConfirmed = table.Column<bool>(nullable: false)
+                    IsEmailConfirmed = table.Column<bool>(nullable: false),
+                    RefreshToken = table.Column<string>(maxLength: 128, nullable: true),
+                    RefreshTokenExpirationTime = table.Column<DateTime>(nullable: true),
+                    UserAgent = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

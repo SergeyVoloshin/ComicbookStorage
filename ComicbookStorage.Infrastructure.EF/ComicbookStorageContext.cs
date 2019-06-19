@@ -24,16 +24,18 @@ namespace ComicbookStorage.Infrastructure.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                entityType.Relational().TableName = entityType.DisplayName();
-            }
-
             modelBuilder.ApplyConfiguration(new ComicbookMap());
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new EmailTemplateMap());
             modelBuilder.ApplyConfiguration(new EmailMap());
+
+            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (!entityType.IsOwned())
+                {
+                    entityType.Relational().TableName = entityType.DisplayName();
+                }
+            }
         }
     }
 }

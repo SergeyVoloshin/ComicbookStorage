@@ -8,6 +8,7 @@ import configureStore from './store/configureStore';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import comicbookServer from "./utils/comicbookServer";
+import { processLoggedIn} from './store/logIn/actions';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -17,7 +18,9 @@ const history = createBrowserHistory({ basename: baseUrl });
 const initialState = window.initialReduxState;
 export const store = configureStore(history, initialState);
 
-comicbookServer.updateAuthenticationState();
+if (comicbookServer.isAuthenticated()) {
+    store.dispatch(processLoggedIn());
+}
 
 const rootElement = document.getElementById('root');
 

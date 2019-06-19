@@ -14,7 +14,7 @@ export const logInAsync = (logInRequest: LogInRequest, history: History) => asyn
 
     if (response.ok) {
         history.push(AppPathConfig.home);
-        comicbookServer.setAuthenticationToken(await response.json());
+        comicbookServer.setAuthenticationTokens(await response.json());
         return dispatch(processLoggedIn());
     } else {
         return dispatch(processLogInFailed(await response.json()));

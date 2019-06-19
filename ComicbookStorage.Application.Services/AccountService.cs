@@ -4,7 +4,6 @@ namespace ComicbookStorage.Application.Services
     using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoMapper;
     using Base;
@@ -27,7 +26,9 @@ namespace ComicbookStorage.Application.Services
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
 
-        Task<string> Authenticate(LogInDto authenticationRequest);
+        Task<AuthenticationResponseDto> Authorize(LogInDto authenticationRequest, string userAgent);
+
+        Task<AuthenticationResponseDto> RefreshToken(RefreshTokenDto tokens, string userAgent);
     }
 
     public class AccountService : ServiceBase, IAccountService
@@ -80,13 +81,32 @@ namespace ComicbookStorage.Application.Services
             return accountManager.ConfirmEmail(confirmationCode);
         }
 
-        public async Task<string> Authenticate(LogInDto authenticationRequest)
+        public async Task<AuthenticationResponseDto> Authorize(LogInDto authenticationRequest, string userAgent)
         {
-            if (await accountManager.CheckCredentials(authenticationRequest.Email, authenticationRequest.Password))
+            string refreshToken = await accountManager.Authorize(authenticationRequest.Email, authenticationRequest.Password, userAgent, securityConfiguration.RefreshExpiration);
+            return GetAuthenticationResponse(authenticationRequest.Email, refreshToken);
+        }
+
+        public async Task<AuthenticationResponseDto> RefreshToken(RefreshTokenDto tokens, string userAgent)
+        {
+            var principal = GetPrincipalFromExpiredToken(tokens.AccessToken);
+            Claim claim = principal?.FindFirst(c => c.Type == ClaimTypes.Email);
+            if (claim != null)
+            {
+                string renewedRefreshToken = await accountManager.RefreshToken(claim.Value, tokens.RefreshToken, userAgent, securityConfiguration.RefreshExpiration);
+                return GetAuthenticationResponse(claim.Value, renewedRefreshToken);
+            }
+
+            return null;
+        }
+
+        private AuthenticationResponseDto GetAuthenticationResponse(string email, string refreshToken)
+        {
+            if (!string.IsNullOrEmpty(refreshToken))
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Email, authenticationRequest.Email)
+                    new Claim(ClaimTypes.Email, email)
                 };
                 var credentials = new SigningCredentials(securityConfiguration.GetEncodingKey(), securityConfiguration.SigningAlgorithm);
 
@@ -97,7 +117,24 @@ namespace ComicbookStorage.Application.Services
                     expires: DateTime.Now.AddMinutes(securityConfiguration.AccessExpiration),
                     signingCredentials: credentials
                 );
-                return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                string accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                return new AuthenticationResponseDto(accessToken, refreshToken);
+            }
+
+            return null;
+        }
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = securityConfiguration.GeTokenValidationParameters();
+            tokenValidationParameters.ValidateLifetime = false;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            if (securityToken is JwtSecurityToken jwtSecurityToken &&
+                jwtSecurityToken.Header.Alg.Equals(securityConfiguration.SigningAlgorithm, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return principal;
             }
 
             return null;

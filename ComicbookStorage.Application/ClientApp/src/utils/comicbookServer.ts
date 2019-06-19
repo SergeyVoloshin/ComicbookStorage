@@ -1,108 +1,119 @@
 ﻿import fetch from 'cross-fetch';
 import { store } from '..';
 import { setProgressBar } from '../store/commonUi/actions';
-import { processLoggedIn } from '../store/logIn/actions';
-import messageBox from "./messageBox";
+import { logOut } from '../store/logIn/actions';
 
 
 class ComicbookServer {
-    get<T>(url: string, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<T> {
-        checkProgressStart(showProgressbar);
-
-        let request: RequestInit = {
-            method: "GET"
-        }
-        if (sendAuthenticationToken) {
-            request = {
-                ...request,
-                headers: getAuthenticationHeader()
-            };
-        }
-        return fetch(url, request)
-            .then(
-                response => {
-                    checkProgressStop(showProgressbar);
-                    if (!response.ok) {
-                        messageBox.showGeneralError();
-                    }
-                    return response;
-                })
-            .then(
-                response => {
-                    return response.json();
-                },
-                error => {
-                    messageBox.showGeneralError();
-                    return error;
-                }
-            );
+    get(url: string, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<Response> {
+        return sendRequest(url, null, "GET", sendAuthenticationToken, showProgressbar);
     }
 
     post<T>(url: string, data: T, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<Response> {
-        return sendJson(url, data, "POST", sendAuthenticationToken, showProgressbar);
+        return sendRequest(url, data, "POST", sendAuthenticationToken, showProgressbar);
     }
 
     put<T>(url: string, data: T, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<Response> {
-        return sendJson(url, data, "PUT", sendAuthenticationToken, showProgressbar);
+        return sendRequest(url, data, "PUT", sendAuthenticationToken, showProgressbar);
     }
 
-    setAuthenticationToken(token: string) {
-        localStorage.setItem(authenticationTokenKey, token);
+    setAuthenticationTokens(tokens: AuthenticationResponseDto) {
+        setAuthenticationTokens(tokens);
     }
 
-    clearAuthenticationToken() {
-        localStorage.removeItem(authenticationTokenKey);
+    clearAuthenticationTokens() {
+        localStorage.removeItem(accessTokenKey);
+        localStorage.removeItem(refreshTokenKey);
     }
 
-    updateAuthenticationState() {
-        if (localStorage.getItem(authenticationTokenKey)) {
-            store.dispatch(processLoggedIn());
-        }
+    isAuthenticated() {
+        return localStorage.getItem(accessTokenKey) !== null;
     }
-    
 }
 
 const getAuthenticationHeader = () => {
-    let token: string | null = localStorage.getItem(authenticationTokenKey);
+    let token: string | null = getAccessToken();
     if (token) {
         return { "Authorization": `Bearer ${token}` }
     }
-    const errorMessage = "You are not authorized to perform this operation";
-    messageBox.showError(errorMessage);
-    throw errorMessage;
+    return undefined;
 }
 
-const authenticationTokenKey: string = "authenticationToken";
+const getRefreshToken = () => {
+    return localStorage.getItem(refreshTokenKey);
+}
 
-const sendJson = <T>(url: string, data: T, method: string, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<Response> => {
+const getAccessToken = () => {
+    return localStorage.getItem(accessTokenKey);
+}
+
+const setAuthenticationTokens = (tokens: AuthenticationResponseDto) => {
+    localStorage.setItem(accessTokenKey, tokens.accessToken);
+    localStorage.setItem(refreshTokenKey, tokens.refreshToken);
+}
+
+interface AuthenticationResponseDto {
+    accessToken: string,
+    refreshToken: string,
+}
+
+const bodyTypeHeaders: HeadersInit = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+const accessTokenKey: string = "accessToken";
+const refreshTokenKey: string = "refreshToken";
+
+const sendRequest = async <T>(url: string, data: T, method: string, sendAuthenticationToken: boolean, showProgressbar: boolean): Promise<Response> => {
     checkProgressStart(showProgressbar);
-    let headers: HeadersInit = {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+
+    let request: RequestInit = {
+        method: method,
+        body: data ? JSON.stringify(data) : null,
+        headers: {}
     }
+
     if (sendAuthenticationToken) {
-        headers = {
-            ...headers,
+        request.headers = {
+            ...request.headers,
             ...getAuthenticationHeader()
         }
-    }        
-    return fetch(url,
-        {
-            method: method,
-            headers: headers,
-            body: data ? JSON.stringify(data) : null,
-        })
-        .then(
-            response => {
-                checkProgressStop(showProgressbar);
-                return response;
-            }
-            ,
-            error => {
-                messageBox.showGeneralError();
-                return error;
-            }
-        );
+    }
+
+    
+    if (data) {
+        request.headers = {
+            ...request.headers,
+            ...bodyTypeHeaders
+        }
+    }
+
+    let response: Response = await fetch(url, request);
+
+    if (response.status === 401) {
+        let refreshToken = getRefreshToken();
+        let accessToken = getAccessToken();
+        let refreshResponse: Response = await fetch(
+            'account/refresh-token',
+            {
+                method: 'POST',
+                headers: bodyTypeHeaders,
+                body: JSON.stringify({ accessToken: accessToken, refreshToken: refreshToken }),
+            });
+        if (!refreshResponse.ok) {
+            checkProgressStop(showProgressbar);
+            store.dispatch(logOut());
+            return refreshResponse;
+        }
+        setAuthenticationTokens(await refreshResponse.json());
+        let result: Response = await sendRequest(url, data, method, sendAuthenticationToken, false);
+        checkProgressStop(showProgressbar);
+        return result;
+    }
+
+    checkProgressStop(showProgressbar);
+    return response;
 }
 
 const checkProgressStart = (showProgressbar: boolean) => {

@@ -1,24 +1,23 @@
 ﻿import React, { Component } from "react";
 import { bindActionCreators, Dispatch } from "redux";
-import { connect } from 'react-redux';
-import { History } from 'history';
+import { connect } from "react-redux";
+import { History } from "history";
 import { logOut } from "../store/logIn/actions";
 import { ApplicationState } from "../store/configureStore";
 import AppPathConfig from "../utils/appPathConfig";
-import messageBox from "../utils/messageBox";
+import { LogOutReason } from "../store/logIn/types"
 
 type LogOutProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
-    {
-        history: History
+{
+    history: History
 }
 
 export class LogOut extends Component<LogOutProps> {
 
     componentDidMount() {
         const { logOut, history } = this.props;
-        logOut();
-        messageBox.showInfo("You have been logged out");
+        logOut(LogOutReason.UserRequest);
         history.push(AppPathConfig.home);
     }
 

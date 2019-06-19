@@ -8,6 +8,7 @@ namespace ComicbookStorage.Application.Controllers
     using Domain.OperationResults;
     using DTOs.Account;
     using Infrastructure.Localization;
+    using Microsoft.Net.Http.Headers;
     using Services;
 
     public class AccountController : ApplicationControllerBase
@@ -64,14 +65,25 @@ namespace ComicbookStorage.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn(LogInDto request)
+        public async Task<IActionResult> LogIn(LogInDto logInDto)
         {
-            var token = await accountService.Authenticate(request);
-            if (string.IsNullOrEmpty(token))
+            var authenticationResponse = await accountService.Authorize(logInDto, Request.Headers[HeaderNames.UserAgent].ToString());
+            if (authenticationResponse == null)
             {
                 return BadRequest<LogInDto>(r => r.Password, LocalizedResources.UserAuthenticationError);
             }
-            return Ok(token);
+            return Ok(authenticationResponse);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken(RefreshTokenDto tokens)
+        {
+            var authenticationResponse = await accountService.RefreshToken(tokens, Request.Headers[HeaderNames.UserAgent].ToString());
+            if (authenticationResponse == null)
+            {
+                return BadRequest<RefreshTokenDto>(r => r.RefreshToken, LocalizedResources.RefreshTokenError);
+            }
+            return Ok(authenticationResponse);
         }
     }
 }

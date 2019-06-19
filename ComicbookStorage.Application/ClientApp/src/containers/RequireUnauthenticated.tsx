@@ -13,12 +13,23 @@ export default function (ComposedComponent: typeof React.Component) {
     class RequireUnauthenticated extends Component<RequireUnauthenticatedProps> {
 
         componentDidMount() {
+            this.redirectIfAuthenticated();
+        }
+
+        componentDidUpdate() {
+            this.redirectIfAuthenticated();
+        }
+
+        redirectIfAuthenticated() {
             if (this.props.authenticated) {
                 this.props.history.push(AppPathConfig.home);
             }
         }
 
         render() {
+            if (this.props.authenticated) {
+                return '';
+            }
             return <ComposedComponent {...this.props} />;
         }
     }

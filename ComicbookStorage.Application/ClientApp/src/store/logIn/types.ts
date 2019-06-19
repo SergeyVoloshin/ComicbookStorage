@@ -34,4 +34,9 @@ export interface LogInFailedAction {
     errors: ValidationErrors,
 }
 
+export enum LogOutReason {
+    Timeout = 0,
+    UserRequest = 1,
+}
+
 export type LogInActionTypes = LoggedInAction | LogInFailedAction | LogOutAction

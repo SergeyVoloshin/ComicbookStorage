@@ -7,24 +7,9 @@ namespace ComicbookStorage.Infrastructure.Cryptography
 
     public static class PasswordEncryptionProvider
     {
-        public static string GetMd5(string input)
+        public static string GenerateRandomBase64String(int byteLength)
         {
-            using (MD5 md5Hash = new MD5CryptoServiceProvider())
-            {
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                StringBuilder sBuilder = new StringBuilder();
-                for (int i = 0; i < data.Length; i++)
-                {
-                    sBuilder.Append(data[i].ToString("x2"));
-                }
-
-                return sBuilder.ToString();
-            }
-        }
-
-        public static string GenerateSalt(int length)
-        {
-            byte[] salt = new byte[length];
+            byte[] salt = new byte[byteLength];
             using (RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider())
             {
                 csprng.GetBytes(salt);
@@ -49,10 +34,10 @@ namespace ComicbookStorage.Infrastructure.Cryptography
 
         public static string GenerateConfirmationCode(string id, int length)
         {
-            return $"{GetMd5(id)}{GenerateRandomString(length)}";
+            return $"{GetMd5(id)}{GenerateRandomAlphanumericString(length)}";
         }
 
-        private static string GenerateRandomString(int length)
+        private static string GenerateRandomAlphanumericString(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder result = new StringBuilder();
@@ -69,6 +54,21 @@ namespace ComicbookStorage.Infrastructure.Cryptography
             }
 
             return result.ToString();
+        }
+
+        private static string GetMd5(string input)
+        {
+            using (MD5 md5Hash = new MD5CryptoServiceProvider())
+            {
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                return sBuilder.ToString();
+            }
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)

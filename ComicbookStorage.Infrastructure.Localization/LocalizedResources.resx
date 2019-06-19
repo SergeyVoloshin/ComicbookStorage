@@ -131,6 +131,9 @@ Please confirm your email by clicking the link below.&lt;br/&gt;
   <data name="EmailConfirmationSubject" xml:space="preserve">
     <value>[{ApplicationName}] Confirm your email address</value>
   </data>
+  <data name="RefreshTokenError" xml:space="preserve">
+    <value>The tokens cannot be updated</value>
+  </data>
   <data name="UserAuthenticationError" xml:space="preserve">
     <value>The email or password is incorrect. Or maybe you forgot to confirm your email</value>
   </data>

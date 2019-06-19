@@ -1,6 +1,7 @@
 ﻿
 namespace ComicbookStorage.Application.Services.Configuration
 {
+    using System;
     using System.Text;
     using Microsoft.IdentityModel.Tokens;
 
@@ -15,6 +16,7 @@ namespace ComicbookStorage.Application.Services.Configuration
         string SigningAlgorithm { get; }
         SecurityKey GetEncodingKey();
         SecurityKey GetDecodingKey();
+        TokenValidationParameters GeTokenValidationParameters();
     }
 
     public class SecurityConfiguration : ISecurityConfiguration
@@ -42,6 +44,18 @@ namespace ComicbookStorage.Application.Services.Configuration
         public SecurityKey GetDecodingKey()
         {
             return GetEncodingKey();
+        }
+
+        public TokenValidationParameters GeTokenValidationParameters()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = GetDecodingKey(),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.FromSeconds(30)
+            };
         }
     }
 }

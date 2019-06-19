@@ -23,7 +23,8 @@ export const createUserAsync = (newUser: CreatedUser, history: History) => async
 }
 
 export const isUniqueFieldTakenAsync = (fieldName: string, fieldValue: string, existingErrors: FormErrors<CreatedUser>): Promise<boolean> => {
-    return comicbookServer.get<boolean>(`/account/is-${fieldName}-taken/${fieldValue}`, false, false)
+    return comicbookServer.get(`/account/is-${fieldName}-taken/${fieldValue}`, false, false)
+        .then(response => response.json())
         .then(result => {
             if (result) {
                 throw {

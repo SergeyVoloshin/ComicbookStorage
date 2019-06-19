@@ -1,6 +1,7 @@
-﻿import { LoggedInAction, LOG_IN_SUCCESS, LogInFailedAction, LOG_IN_ERROR, LogOutAction, LOG_OUT } from './types';
+﻿import { LoggedInAction, LOG_IN_SUCCESS, LogInFailedAction, LOG_IN_ERROR, LogOutAction, LOG_OUT, LogOutReason } from './types';
 import { ErrorResponse } from '../common/types';
 import comicbookServer from '../../utils/comicbookServer';
+import messageBox from "../../utils/messageBox";
 
 export function processLoggedIn(): LoggedInAction {
     return {
@@ -8,8 +9,13 @@ export function processLoggedIn(): LoggedInAction {
     }
 }
 
-export function logOut(): LogOutAction {
-    comicbookServer.clearAuthenticationToken();
+export function logOut(reason: LogOutReason = LogOutReason.Timeout): LogOutAction {
+    if (reason === LogOutReason.Timeout) {
+        messageBox.showInfo("You have been logged out due to timeout");
+    } else {
+        messageBox.showInfo("You have been successfully logged out");
+    }
+    comicbookServer.clearAuthenticationTokens();
     return {
         type: LOG_OUT,
     }

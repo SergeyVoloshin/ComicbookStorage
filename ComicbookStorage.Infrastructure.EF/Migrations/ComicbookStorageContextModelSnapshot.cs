@@ -135,9 +135,16 @@ Please confirm your email by clicking the link below.<br/>
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime?>("RefreshTokenExpirationTime");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<string>("UserAgent");
 
                     b.HasKey("Id");
 
