@@ -38,6 +38,7 @@
     <None Remove="ClientApp\src\containers\RequireUnauthenticated.tsx" />
     <None Remove="ClientApp\src\containers\SignUp.tsx" />
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
+    <None Remove="ClientApp\src\containers\typing\RestoreAccess.tsx" />
     <None Remove="ClientApp\src\index.js" />
     <None Remove="ClientApp\src\store\comicbookList\actions.ts" />
     <None Remove="ClientApp\src\store\comicbookList\reducer.ts" />
@@ -58,6 +59,10 @@
     <None Remove="ClientApp\src\store\navMenu\actions.ts" />
     <None Remove="ClientApp\src\store\navMenu\reducer.ts" />
     <None Remove="ClientApp\src\store\navMenu\types.ts" />
+    <None Remove="ClientApp\src\store\restoreAccess\actions.ts" />
+    <None Remove="ClientApp\src\store\restoreAccess\reducer.ts" />
+    <None Remove="ClientApp\src\store\restoreAccess\thunks.ts" />
+    <None Remove="ClientApp\src\store\restoreAccess\types.ts" />
     <None Remove="ClientApp\src\store\signUp\actions.ts" />
     <None Remove="ClientApp\src\store\signUp\reducer.ts" />
     <None Remove="ClientApp\src\store\signUp\thunks.ts" />
@@ -91,6 +96,7 @@
     <TypeScriptCompile Include="ClientApp\src\containers\RequireUnauthenticated.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\SignUp.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
+    <TypeScriptCompile Include="ClientApp\src\containers\RestoreAccess.tsx" />
     <TypeScriptCompile Include="ClientApp\src\index.js" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\reducer.ts" />
@@ -111,6 +117,10 @@
     <TypeScriptCompile Include="ClientApp\src\store\navMenu\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\navMenu\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\navMenu\types.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\restoreAccess\actions.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\restoreAccess\reducer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\restoreAccess\thunks.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\restoreAccess\types.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\signUp\thunks.ts" />

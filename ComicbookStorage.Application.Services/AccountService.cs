@@ -13,7 +13,6 @@ namespace ComicbookStorage.Application.Services
     using Domain.Services;
     using DTOs.Account;
     using Flurl;
-    using Infrastructure.Localization;
     using Microsoft.IdentityModel.Tokens;
 
     public interface IAccountService : IService
@@ -25,6 +24,8 @@ namespace ComicbookStorage.Application.Services
         Task<UserModificationResult> CreateUser(CreateUserDto newUserDto);
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
+
+        Task<RestoreAccessResult> RestoreAccess(RestoreAccessDto restoreRequest);
 
         Task<AuthenticationResponseDto> Authorize(LogInDto authenticationRequest, string userAgent);
 
@@ -69,8 +70,7 @@ namespace ComicbookStorage.Application.Services
             {
                 await emailManager.EnqueueEmailConfirmation(
                     newUser, 
-                    LocalizedResources.ApplicationName,
-                    Url.Combine(appConfiguration.BaseUrl, appConfiguration.ConfirmEmailUrl, newUser.ConfirmationCode));
+                    GetEmailConfirmationUrl(newUser.ConfirmationCode));
             }
 
             return result;
@@ -79,6 +79,22 @@ namespace ComicbookStorage.Application.Services
         public Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode)
         {
             return accountManager.ConfirmEmail(confirmationCode);
+        }
+
+        public async Task<RestoreAccessResult> RestoreAccess(RestoreAccessDto restoreRequest)
+        {
+            var (result, user, newPassword) = await accountManager.RestoreAccess(restoreRequest.Email);
+            switch (result)
+            {
+                case RestoreAccessResult.ResendConfirmationCode:
+                    await emailManager.EnqueueEmailConfirmation(user, GetEmailConfirmationUrl(user.ConfirmationCode));
+                    break;
+                case RestoreAccessResult.ResetPassword:
+                    await emailManager.EnqueuePasswordResetEmail(user, newPassword, Url.Combine(appConfiguration.BaseUrl, appConfiguration.LogInUrl));
+                    break;
+            }
+
+            return result;
         }
 
         public async Task<AuthenticationResponseDto> Authorize(LogInDto authenticationRequest, string userAgent)
@@ -138,6 +154,11 @@ namespace ComicbookStorage.Application.Services
             }
 
             return null;
+        }
+
+        private string GetEmailConfirmationUrl(string confirmationCode)
+        {
+            return Url.Combine(appConfiguration.BaseUrl, appConfiguration.ConfirmEmailUrl, confirmationCode);
         }
     }
 }

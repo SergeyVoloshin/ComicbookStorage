@@ -99,11 +99,39 @@ namespace ComicbookStorage.Infrastructure.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified email is not found in our database.
+        /// </summary>
+        public static string EmailNotFoundError {
+            get {
+                return ResourceManager.GetString("EmailNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The tokens cannot be updated.
         /// </summary>
         public static string RefreshTokenError {
             get {
                 return ResourceManager.GetString("RefreshTokenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please use the following password to &lt;a href=&quot;{LogInLink}&quot;&gt;log in&lt;/a&gt;: &lt;br /&gt;
+        ///{NewPassword}.
+        /// </summary>
+        public static string ResetPasswordEmailMessage {
+            get {
+                return ResourceManager.GetString("ResetPasswordEmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{ApplicationName}] Your password has been reset.
+        /// </summary>
+        public static string ResetPasswordEmailSubject {
+            get {
+                return ResourceManager.GetString("ResetPasswordEmailSubject", resourceCulture);
             }
         }
         

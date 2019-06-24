@@ -37,7 +37,7 @@ namespace ComicbookStorage.Infrastructure.Cryptography
             return $"{GetMd5(id)}{GenerateRandomAlphanumericString(length)}";
         }
 
-        private static string GenerateRandomAlphanumericString(int length)
+        public static string GenerateRandomAlphanumericString(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder result = new StringBuilder();

@@ -14,13 +14,14 @@ namespace ComicbookStorage.Domain.Core.Entities
         private const int DefaultConfirmationCodeLength = 64;
         private const int DefaultRefreshTokenLength = 64;
 
+        private const int MinPasswordLength = 8;
+        private const int MaxPasswordLength = 15;
+
         public User(string email, string name, string password)
         {
             Email = email.Trim();
             Name = name.Trim();
-            Salt = PasswordEncryptionProvider.GenerateRandomBase64String(DefaultSaltLength);
-            EncryptionIterationCount = DefaultIterationCount;
-            Password = GetEncryptedPassword(password);
+            SetPassword(password);
             ConfirmationCode = PasswordEncryptionProvider.GenerateConfirmationCode(Email, DefaultConfirmationCodeLength);
         }
 
@@ -57,6 +58,15 @@ namespace ComicbookStorage.Domain.Core.Entities
             UserAgent = userAgent;
         }
 
+        public string ResetPassword()
+        {
+            Random random = new Random();
+            var password = PasswordEncryptionProvider.GenerateRandomAlphanumericString(random.Next(MinPasswordLength, MaxPasswordLength));
+            RefreshToken = null;
+            SetPassword(password);
+            return password;
+        }
+
         public bool VerifyRefreshToken(string userAgent, string token)
         {
             return IsEmailConfirmed && RefreshTokenExpirationTime >= DateTime.Now && userAgent == UserAgent && token == RefreshToken;
@@ -65,6 +75,13 @@ namespace ComicbookStorage.Domain.Core.Entities
         public bool VerifyPassword(string password)
         {
             return IsEmailConfirmed && PasswordEncryptionProvider.VerifyPassword(password, Password, Salt, EncryptionIterationCount);
+        }
+
+        private void SetPassword(string password)
+        {
+            EncryptionIterationCount = DefaultIterationCount;
+            Salt = PasswordEncryptionProvider.GenerateRandomBase64String(DefaultSaltLength);
+            Password = GetEncryptedPassword(password);
         }
 
         private string GetEncryptedPassword(string password)

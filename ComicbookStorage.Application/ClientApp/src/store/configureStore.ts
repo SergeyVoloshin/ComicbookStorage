@@ -10,12 +10,14 @@ import { createUserReducer } from './signUp/reducer';
 import { confirmEmailReducer } from './emailConfirmationCode/reducer';
 import { logInReducer } from './logIn/reducer';
 import { navMenuReducer } from './navMenu/reducer';
+import { restoreAccessReducer } from './restoreAccess/reducer';
 import { ComicbookListState } from './comicbookList/types';
 import { CommonUiState } from './commonUi/types';
 import { CreateUserState } from './signUp/types';
 import { ConfirmEmailState } from './emailConfirmationCode/types';
 import { LogInState } from './logIn/types';
 import { NavMenuState } from './navMenu/types';
+import { RestoreState } from './restoreAccess/types';
 
 export default function configureStore(history: History, initialState: ApplicationState): Store<ApplicationState> {
     const reducers = {
@@ -26,6 +28,7 @@ export default function configureStore(history: History, initialState: Applicati
         confirmEmail: confirmEmailReducer,
         logIn: logInReducer,
         navMenu: navMenuReducer,
+        restoreAccess: restoreAccessReducer,
     };
 
     let middleware = applyMiddleware(thunk, routerMiddleware(history));
@@ -54,4 +57,5 @@ export type ApplicationState = Readonly<{
     confirmEmail: ConfirmEmailState,
     logIn: LogInState,
     navMenu: NavMenuState,
+    restoreAccess: RestoreState,
 }>

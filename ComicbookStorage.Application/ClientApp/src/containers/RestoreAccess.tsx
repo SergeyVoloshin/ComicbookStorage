@@ -1,27 +1,26 @@
 ﻿import React, { Component } from "react";
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from 'react-redux';
+import { History } from 'history';
 import { InjectedFormProps, Field, reduxForm, WrappedFieldProps } from "redux-form";
 import { Form, Button, Col, Row } from "reactstrap";
-import { History } from 'history';
+import { RestoreRequest } from "../store/restoreAccess/types";
 import InputField, { InputProps } from "../components/InputField";
 import { ApplicationState } from "../store/configureStore";
-import { logInAsync } from "../store/logIn/thunks";
-import { LogInRequest } from "../store/logIn/types";
+import { restoreAccessAsync } from "../store/restoreAccess/thunks";
 import { required, email } from "../utils/validators";
 import ErrorMessage from "../components/ErrorMessage";
-import AppPathConfig from '../utils/appPathConfig';
 
-type LogInProps = ReturnType<typeof mapStateToProps> &
+type RestoreAccessProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
     {
-        history: History
-    }
+        history: History,
+    };
 
-export class LogIn extends Component<InjectedFormProps<LogInRequest, LogInProps> & LogInProps> {
+export class RestoreAccess extends Component<InjectedFormProps<RestoreRequest, RestoreAccessProps> & RestoreAccessProps> {
 
-    submit = (values: LogInRequest) => {
-        this.props.logIn(values, this.props.history);
+    submit = (values: RestoreRequest) => {
+        this.props.restore(values, this.props.history);
     }
 
     renderField = (fieldProperties: WrappedFieldProps & InputProps): JSX.Element => {
@@ -29,11 +28,15 @@ export class LogIn extends Component<InjectedFormProps<LogInRequest, LogInProps>
     }
 
     render() {
-        const { handleSubmit, submitting, logInState } = this.props;
+        const { handleSubmit, submitting, restoreState } = this.props;
 
         return (
             <div>
-                <ErrorMessage errors={logInState.errors} />
+                <div>
+                    <h3>Restore access to your account</h3>
+                    <p>Please enter your email and we will reset your password or resend the confirmation code if the email is not confirmed yet.</p>
+                </div>
+                <ErrorMessage errors={restoreState.errors} />
                 <Form onSubmit={handleSubmit(this.submit)}>
                     <Field
                         name="email"
@@ -43,39 +46,30 @@ export class LogIn extends Component<InjectedFormProps<LogInRequest, LogInProps>
                         component={this.renderField}
                         label="Email*"
                         validate={[required, email]} />
-                    <Field
-                        name="password"
-                        id="password"
-                        type="password"
-                        component={this.renderField}
-                        label="Password*"
-                        validate={[required]} />
                     <Row form>
                         <Col md={8}>
-                            <Button type="submit" disabled={submitting} >Log In</Button>
+                            <Button type="submit" disabled={submitting} >Restore</Button>
                         </Col>
                     </Row>
                 </Form >
-                <br />
-                <a href={AppPathConfig.restoreAccess}>Restore access to your account</a>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state: ApplicationState) => {
-    return { logInState: state.logIn }
+    return { restoreState: state.restoreAccess }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
     {
-        logIn: logInAsync,
+        restore: restoreAccessAsync,
     },
     dispatch
 );
 
-const logInForm = reduxForm<LogInRequest, LogInProps>({
-    form: "logIn",
-})(LogIn);
+const restoreAccessForm = reduxForm<RestoreRequest, RestoreAccessProps>({
+    form: "restoreAccess",
+})(RestoreAccess);
 
-export default connect(mapStateToProps, mapDispatchToProps)(logInForm)
+export default connect(mapStateToProps, mapDispatchToProps)(restoreAccessForm)

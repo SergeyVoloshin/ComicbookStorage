@@ -4,7 +4,6 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
     using Base;
     using Domain.Core.Entities;
     using Localization;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     internal class EmailTemplateMap : EntityMap<EmailTemplate>
@@ -21,6 +20,7 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
                 .IsRequired();
 
             builder.HasData(new EmailTemplate(EmailTemplateId.EmailConfirmation, LocalizedResources.EmailConfirmationSubject, LocalizedResources.EmailConfirmationMessage));
+            builder.HasData(new EmailTemplate(EmailTemplateId.PasswordReset, LocalizedResources.ResetPasswordEmailSubject, LocalizedResources.ResetPasswordEmailMessage));
         }
     }
 }

@@ -91,7 +91,7 @@ const sendRequest = async <T>(url: string, data: T, method: string, sendAuthenti
 
     let response: Response = await fetch(url, request);
 
-    if (response.status === 401) {
+    if (sendAuthenticationToken && response.status === 401) {
         let refreshToken = getRefreshToken();
         let accessToken = getAccessToken();
         let refreshResponse: Response = await fetch(

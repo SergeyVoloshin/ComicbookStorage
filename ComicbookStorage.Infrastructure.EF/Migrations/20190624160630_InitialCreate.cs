@@ -96,6 +96,12 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
 Please confirm your email by clicking the link below.<br/>
 <a href=""{ConfirmationLink}"">Confirm this email address</a>", "[{ApplicationName}] Confirm your email address" });
 
+            migrationBuilder.InsertData(
+                table: "EmailTemplate",
+                columns: new[] { "Id", "Body", "Subject" },
+                values: new object[] { 2, @"Please use the following password to <a href=""{LogInLink}"">log in</a>: <br />
+{NewPassword}", "[{ApplicationName}] Your password has been reset" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Email_EmailTemplateId",
                 table: "Email",

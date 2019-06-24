@@ -21,6 +21,8 @@ namespace ComicbookStorage.Domain.Services
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
 
+        Task<(RestoreAccessResult result, User user, string newPassword)> RestoreAccess(string email);
+
         Task<string> Authorize(string email, string password, string userAgent, double tokenLifeTimeMinutes);
 
         Task<string> RefreshToken(string email, string userRefreshToken, string userAgent, double tokenLifeTimeMinutes);
@@ -75,6 +77,24 @@ namespace ComicbookStorage.Domain.Services
                 return EmailConfirmationResult.AlreadyConfirmed;
             }
             return EmailConfirmationResult.UserNotFound;
+        }
+
+        public async Task<(RestoreAccessResult result, User user, string newPassword)> RestoreAccess(string email)
+        {
+            User user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
+            if (user != null)
+            {
+                if (!user.IsEmailConfirmed)
+                {
+                    return (RestoreAccessResult.ResendConfirmationCode, user, null);
+                }
+
+                string newPassword = user.ResetPassword();
+                userRepository.Update(user);
+                await UnitOfWork.SaveAsync();
+                return (RestoreAccessResult.ResetPassword, user, newPassword);
+            }
+            return (RestoreAccessResult.NotFound, null, null);
         }
 
         public Task<string> Authorize(string email, string password, string userAgent, double tokenLifeTimeMinutes)

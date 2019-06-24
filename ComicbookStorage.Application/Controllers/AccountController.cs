@@ -85,5 +85,21 @@ namespace ComicbookStorage.Application.Controllers
             }
             return Ok(authenticationResponse);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Restore(RestoreAccessDto restoreRequest)
+        {
+            var result = await accountService.RestoreAccess(restoreRequest);
+            switch (result)
+            {
+                case RestoreAccessResult.ResendConfirmationCode:
+                case RestoreAccessResult.ResetPassword:
+                    return Ok();
+                case RestoreAccessResult.NotFound:
+                    return BadRequest<RestoreAccessDto>(r => r.Email, LocalizedResources.EmailNotFoundError);
+                default:
+                    throw new InvalidOperationException(nameof(RestoreAccessResult));
+            }
+        }
     }
 }

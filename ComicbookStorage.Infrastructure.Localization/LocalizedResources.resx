@@ -131,8 +131,18 @@ Please confirm your email by clicking the link below.&lt;br/&gt;
   <data name="EmailConfirmationSubject" xml:space="preserve">
     <value>[{ApplicationName}] Confirm your email address</value>
   </data>
+  <data name="EmailNotFoundError" xml:space="preserve">
+    <value>The specified email is not found in our database</value>
+  </data>
   <data name="RefreshTokenError" xml:space="preserve">
     <value>The tokens cannot be updated</value>
+  </data>
+  <data name="ResetPasswordEmailMessage" xml:space="preserve">
+    <value>Please use the following password to &lt;a href="{LogInLink}"&gt;log in&lt;/a&gt;: &lt;br /&gt;
+{NewPassword}</value>
+  </data>
+  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+    <value>[{ApplicationName}] Your password has been reset</value>
   </data>
   <data name="UserAuthenticationError" xml:space="preserve">
     <value>The email or password is incorrect. Or maybe you forgot to confirm your email</value>

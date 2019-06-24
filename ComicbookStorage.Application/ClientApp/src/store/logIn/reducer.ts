@@ -25,6 +25,7 @@ export function logInReducer(
         case LOG_IN_ERROR:
         return {
             ...state,
+            authenticated: false,
             errors: action.errors,
         }
     default:

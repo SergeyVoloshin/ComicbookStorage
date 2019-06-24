@@ -8,6 +8,7 @@
     <ProjectReference Include="..\ComicbookStorage.Domain.Core\ComicbookStorage.Domain.Core.csproj" />
     <ProjectReference Include="..\ComicbookStorage.Domain.DataAccess\ComicbookStorage.Domain.DataAccess.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\ComicbookStorage.Domain.OperationResults\ComicbookStorage.Domain.OperationResults.csproj" />
+    <ProjectReference Include="..\ComicbookStorage.Infrastructure.Localization\ComicbookStorage.Infrastructure.Localization.csproj" />
   </ItemGroup>
 
 </Project>

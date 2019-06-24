@@ -107,6 +107,13 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
 Please confirm your email by clicking the link below.<br/>
 <a href=""{ConfirmationLink}"">Confirm this email address</a>",
                             Subject = "[{ApplicationName}] Confirm your email address"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Body = @"Please use the following password to <a href=""{LogInLink}"">log in</a>: <br />
+{NewPassword}",
+                            Subject = "[{ApplicationName}] Your password has been reset"
                         });
                 });
 

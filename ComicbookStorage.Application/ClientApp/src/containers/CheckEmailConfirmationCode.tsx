@@ -22,6 +22,7 @@ export class CheckEmailConfirmationCode extends Component<EmailConfirmationProps
         const { confirmEmail, match, history } = this.props;
         confirmEmail(match.params.code, history);
     }
+
     render() {
         const { confirmationState } = this.props;
 

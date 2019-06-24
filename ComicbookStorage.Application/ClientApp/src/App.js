@@ -14,6 +14,7 @@ import AddComicbook from './containers/AddComicbook';
 import ConfirmEmail from './containers/ConfirmEmail';
 import RequireAuthenticated from './containers/RequireAuthenticated';
 import RequireUnauthenticated from './containers/RequireUnauthenticated';
+import RestoreAccess from "./containers/RestoreAccess";
 import AppPathConfig from './utils/appPathConfig';
 
 export default () => (
@@ -23,12 +24,13 @@ export default () => (
         <Layout>
             <Route exact path={AppPathConfig.home} component={Home} />
             <Route path={AppPathConfig.comicbooks} component={ComicbookList} />
-            <Route path={AppPathConfig.confirmEmail} component={ConfirmEmail} />
+            <Route path={AppPathConfig.confirmEmail} component={RequireUnauthenticated(ConfirmEmail)} />
             <Route path={AppPathConfig.sendEmailConfirmationCode} component={CheckEmailConfirmationCode} />
             <Route path={AppPathConfig.signUp} component={RequireUnauthenticated(SignUp)} />
             <Route path={AppPathConfig.logIn} component={RequireUnauthenticated(LogIn)} />
-            <Route path={AppPathConfig.logOut} component={LogOut} />
+            <Route path={AppPathConfig.logOut} component={RequireAuthenticated(LogOut)} />
             <Route path={AppPathConfig.addComicbook} component={RequireAuthenticated(AddComicbook)} />
+            <Route path={AppPathConfig.restoreAccess} component={RequireUnauthenticated(RestoreAccess)} />
         </Layout>
     </div>
 );

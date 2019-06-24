@@ -5,6 +5,7 @@ namespace ComicbookStorage.Application.Services.Configuration
     {
         string BaseUrl { get; set; }
         string ConfirmEmailUrl { get; set; }
+        string LogInUrl { get; set; }
         string ComicbookImagePath { get; set; }
         string SmallCoverName { get; set; }
     }
@@ -13,6 +14,7 @@ namespace ComicbookStorage.Application.Services.Configuration
     {
         public string BaseUrl { get; set; }
         public string ConfirmEmailUrl { get; set; }
+        public string LogInUrl { get; set; }
         public string ComicbookImagePath { get; set; }
         public string SmallCoverName { get; set; }
     }
