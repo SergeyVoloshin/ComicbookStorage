@@ -99,7 +99,7 @@ namespace ComicbookStorage.Infrastructure.EmailSender
 
             using (SmtpClient client = new SmtpClient())
             {
-                await client.ConnectAsync(settings.MailServer, settings.MailPort, false);
+                await client.ConnectAsync(settings.MailServer, settings.MailPort, true);
                 await client.AuthenticateAsync(settings.Sender, settings.Password);
                 await client.SendAsync(mimeMessage);
                 await client.DisconnectAsync(true);

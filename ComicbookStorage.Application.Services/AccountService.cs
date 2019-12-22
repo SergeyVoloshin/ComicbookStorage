@@ -17,11 +17,13 @@ namespace ComicbookStorage.Application.Services
 
     public interface IAccountService : IService
     {
-        Task<bool> IsUserEmailTaken(string email);
+        Task<bool> IsUserEmailTaken(string email, string userEmail);
 
-        Task<bool> IsUserNameTaken(string name);
+        Task<bool> IsUserNameTaken(string name, string userEmail);
 
         Task<UserModificationResult> CreateUser(CreateUserDto newUserDto);
+
+        Task<UserModificationResult> UpdateUser(string email, UpdateUserDto updateUserDto);
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
 
@@ -30,6 +32,8 @@ namespace ComicbookStorage.Application.Services
         Task<AuthenticationResponseDto> Authorize(LogInDto authenticationRequest, string userAgent);
 
         Task<AuthenticationResponseDto> RefreshToken(RefreshTokenDto tokens, string userAgent);
+
+        Task<UserDataDto> GetUserData(string userEmail);
     }
 
     public class AccountService : ServiceBase, IAccountService
@@ -52,25 +56,44 @@ namespace ComicbookStorage.Application.Services
             this.securityConfiguration = securityConfiguration;
         }
 
-        public Task<bool> IsUserEmailTaken(string email)
+        public Task<bool> IsUserEmailTaken(string email, string userEmail)
         {
-            return accountManager.IsUserEmailTaken(email);
+            return accountManager.IsUserEmailTaken(email, userEmail);
         }
 
-        public Task<bool> IsUserNameTaken(string name)
+        public Task<bool> IsUserNameTaken(string name, string userEmail)
         {
-            return accountManager.IsUserNameTaken(name);
+            return accountManager.IsUserNameTaken(name, userEmail);
         }
 
         public async Task<UserModificationResult> CreateUser(CreateUserDto newUserDto)
         {
             User newUser = new User(newUserDto.Email, newUserDto.Name, newUserDto.Password);
             var result = await accountManager.CreateUser(newUser);
-            if (result == UserModificationResult.Success)
+            if (result == UserModificationResult.SuccessConfirmationRequired)
             {
                 await emailManager.EnqueueEmailConfirmation(
                     newUser, 
                     GetEmailConfirmationUrl(newUser.ConfirmationCode));
+            }
+
+            return result;
+        }
+
+        public async Task<UserModificationResult> UpdateUser(string email, UpdateUserDto updateUserDto)
+        {
+            (UserModificationResult result, User user) = await accountManager.UpdateUser(
+                email, 
+                updateUserDto.Email, 
+                updateUserDto.Name, 
+                updateUserDto.NewPassword, 
+                updateUserDto.OldPassword);
+
+            if (result == UserModificationResult.SuccessConfirmationRequired)
+            {
+                await emailManager.EnqueueEmailConfirmation(
+                    user,
+                    GetEmailConfirmationUrl(user.ConfirmationCode));
             }
 
             return result;
@@ -114,6 +137,12 @@ namespace ComicbookStorage.Application.Services
             }
 
             return null;
+        }
+
+        public async Task<UserDataDto> GetUserData(string userEmail)
+        {
+            var user = await accountManager.GetUserData(userEmail);
+            return Mapper.Map<User, UserDataDto>(user);
         }
 
         private AuthenticationResponseDto GetAuthenticationResponse(string email, string refreshToken)

@@ -8,4 +8,5 @@
     public static readonly logOut = '/log-out';
     public static readonly addComicbook = '/add-comicbook';
     public static readonly restoreAccess = '/restore-access';
+    public static readonly accountInfo = '/account-info';
 }

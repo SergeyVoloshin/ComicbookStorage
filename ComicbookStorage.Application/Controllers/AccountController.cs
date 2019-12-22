@@ -1,15 +1,16 @@
 ﻿
 namespace ComicbookStorage.Application.Controllers
 {
-    using System;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Threading.Tasks;
     using Base;
     using Domain.OperationResults;
     using DTOs.Account;
     using Infrastructure.Localization;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Net.Http.Headers;
     using Services;
+    using System;
+    using System.Threading.Tasks;
 
     public class AccountController : ApplicationControllerBase
     {
@@ -23,13 +24,13 @@ namespace ComicbookStorage.Application.Controllers
         [HttpGet("{email}")]
         public Task<bool> IsEmailTaken(string email)
         {
-            return accountService.IsUserEmailTaken(email);
+            return accountService.IsUserEmailTaken(email, AuthenticatedUserEmail);
         }
 
         [HttpGet("{name}")]
         public Task<bool> IsNameTaken(string name)
         {
-            return accountService.IsUserNameTaken(name);
+            return accountService.IsUserNameTaken(name, AuthenticatedUserEmail);
         }
 
         [HttpPost]
@@ -38,13 +39,41 @@ namespace ComicbookStorage.Application.Controllers
             var result = await accountService.CreateUser(user);
             switch (result)
             {
-                case UserModificationResult.Success:
+                case UserModificationResult.SuccessConfirmationRequired:
                     return Ok();
                 case UserModificationResult.DuplicateValues:
                     return BadRequest<CreateUserDto>(u => u.Email, LocalizedResources.UserDuplicateValuesError);
                 default:
                     throw new InvalidOperationException(nameof(UserModificationResult));
             }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto user)
+        {
+            var result = await accountService.UpdateUser(AuthenticatedUserEmail, user);
+            switch (result)
+            {
+                case UserModificationResult.NothingToUpdate:
+                case UserModificationResult.SuccessNoConfirmationRequired:
+                    return Ok(new UpdateUserResultDto { IsConfirmationRequired = false });
+                case UserModificationResult.SuccessConfirmationRequired:
+                    return Ok(new UpdateUserResultDto { IsConfirmationRequired = true });
+                case UserModificationResult.DuplicateValues:
+                    return BadRequest<UpdateUserDto>(u => u.Email, LocalizedResources.UserDuplicateValuesError);
+                case UserModificationResult.IncorrectPassword:
+                    return BadRequest<UpdateUserDto>(u => u.OldPassword, LocalizedResources.UserIncorrectPasswordError);
+                default:
+                    throw new InvalidOperationException(nameof(UserModificationResult));
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public Task<UserDataDto> GetUserData()
+        {
+            return accountService.GetUserData(AuthenticatedUserEmail);
         }
 
         [HttpPut("{confirmationCode}")]

@@ -19,10 +19,10 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public User(string email, string name, string password)
         {
-            Email = email.Trim();
-            Name = name.Trim();
+            Email = PrepareEmail(email);
+            Name = name;
             SetPassword(password);
-            ConfirmationCode = PasswordEncryptionProvider.GenerateConfirmationCode(Email, DefaultConfirmationCodeLength);
+            GenerateConfirmationCode();
         }
 
         private User()
@@ -31,7 +31,7 @@ namespace ComicbookStorage.Domain.Core.Entities
 
         public string Email { get; private set; }
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         public string Salt { get; private set; }
 
@@ -77,7 +77,14 @@ namespace ComicbookStorage.Domain.Core.Entities
             return IsEmailConfirmed && PasswordEncryptionProvider.VerifyPassword(password, Password, Salt, EncryptionIterationCount);
         }
 
-        private void SetPassword(string password)
+        public void SetEmail(string email)
+        {
+            Email = PrepareEmail(email);
+            RefreshToken = null;
+            GenerateConfirmationCode();
+        }
+
+        public void SetPassword(string password)
         {
             EncryptionIterationCount = DefaultIterationCount;
             Salt = PasswordEncryptionProvider.GenerateRandomBase64String(DefaultSaltLength);
@@ -87,6 +94,16 @@ namespace ComicbookStorage.Domain.Core.Entities
         private string GetEncryptedPassword(string password)
         {
             return PasswordEncryptionProvider.CreateHash(password, Salt, EncryptionIterationCount, DefaultHashLength);
+        }
+
+        private void GenerateConfirmationCode()
+        {
+            ConfirmationCode = PasswordEncryptionProvider.GenerateConfirmationCode(Email, DefaultConfirmationCodeLength);
+        }
+
+        private string PrepareEmail(string email)
+        {
+            return email.Trim().ToLower();
         }
     }
 }

@@ -12,7 +12,7 @@ export function processLoggedIn(): LoggedInAction {
 export function logOut(reason: LogOutReason = LogOutReason.Timeout): LogOutAction {
     if (reason === LogOutReason.Timeout) {
         messageBox.showInfo("You have been logged out due to timeout");
-    } else {
+    } else if (reason === LogOutReason.UserRequest) {
         messageBox.showInfo("You have been successfully logged out");
     }
     comicbookServer.clearAuthenticationTokens();

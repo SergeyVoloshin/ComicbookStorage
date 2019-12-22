@@ -37,6 +37,7 @@ export interface LogInFailedAction {
 export enum LogOutReason {
     Timeout = 0,
     UserRequest = 1,
+    EmailChanged = 2,
 }
 
 export type LogInActionTypes = LoggedInAction | LogInFailedAction | LogOutAction

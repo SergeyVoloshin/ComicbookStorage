@@ -153,4 +153,7 @@ Please confirm your email by clicking the link below.&lt;br/&gt;
   <data name="UserEmailIsAlreadyConfirmed" xml:space="preserve">
     <value>The email address this confirmation code refers to has already been confirmed. Please try to log in</value>
   </data>
+  <data name="UserIncorrectPasswordError" xml:space="preserve">
+    <value>The provided password is incorrect</value>
+  </data>
 </root>

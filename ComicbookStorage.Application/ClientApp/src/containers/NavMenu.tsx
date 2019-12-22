@@ -16,6 +16,7 @@ export class NavMenu extends Component<NavMenuProps> {
     getAccountLinks = () => {
         if (this.props.logInState.authenticated) {
             return [
+                <Link key={3} className="dropdown-item" to={AppPathConfig.accountInfo}>Settings</Link>,
                 <Link key={2} className="dropdown-item" to={AppPathConfig.logOut}>Log Out</Link>
             ];
         }

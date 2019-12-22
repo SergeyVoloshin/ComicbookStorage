@@ -161,5 +161,14 @@ namespace ComicbookStorage.Infrastructure.Localization {
                 return ResourceManager.GetString("UserEmailIsAlreadyConfirmed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided password is incorrect.
+        /// </summary>
+        public static string UserIncorrectPasswordError {
+            get {
+                return ResourceManager.GetString("UserIncorrectPasswordError", resourceCulture);
+            }
+        }
     }
 }

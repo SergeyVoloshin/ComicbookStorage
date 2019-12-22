@@ -9,15 +9,18 @@ namespace ComicbookStorage.Domain.Services
     using Core.Entities.Specifications.User;
     using DataAccess;
     using DataAccess.Repositories;
+    using LinqSpecs;
     using OperationResults;
 
     public interface IAccountManager : IManager
     {
-        Task<bool> IsUserEmailTaken(string email);
+        Task<bool> IsUserEmailTaken(string email, string userEmail);
 
-        Task<bool> IsUserNameTaken(string name);
+        Task<bool> IsUserNameTaken(string name, string userEmail);
 
         Task<UserModificationResult> CreateUser(User newUser);
+
+        Task<(UserModificationResult result, User user)> UpdateUser(string email, string newEmail, string newName, string newPassword, string oldPassword);
 
         Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode);
 
@@ -26,6 +29,8 @@ namespace ComicbookStorage.Domain.Services
         Task<string> Authorize(string email, string password, string userAgent, double tokenLifeTimeMinutes);
 
         Task<string> RefreshToken(string email, string userRefreshToken, string userAgent, double tokenLifeTimeMinutes);
+
+        Task<User> GetUserData(string userEmail);
     }
 
     public class AccountManager : ManagerBase, IAccountManager
@@ -37,14 +42,16 @@ namespace ComicbookStorage.Domain.Services
             this.userRepository = userRepository;
         }
 
-        public Task<bool> IsUserEmailTaken(string email)
+        public Task<bool> IsUserEmailTaken(string email, string userEmail)
         {
-            return userRepository.ExistsAsync(new UserWithEmailSpec(email));
+            var spec = NotAuthenticatedUser(userEmail, new UserWithEmailSpec(email));
+            return userRepository.ExistsAsync(spec);
         }
 
-        public Task<bool> IsUserNameTaken(string name)
+        public Task<bool> IsUserNameTaken(string name, string userEmail)
         {
-            return userRepository.ExistsAsync(new UserWithNameSpec(name));
+            var spec = NotAuthenticatedUser(userEmail, new UserWithNameSpec(name));
+            return userRepository.ExistsAsync(spec);
         }
 
         public async Task<UserModificationResult> CreateUser(User newUser)
@@ -55,11 +62,65 @@ namespace ComicbookStorage.Domain.Services
                 userRepository.Add(newUser);
                 await UnitOfWork.SaveAsync();
                 UnitOfWork.TransactionCommit();
-                return UserModificationResult.Success;
+                return UserModificationResult.SuccessConfirmationRequired;
             }
 
             UnitOfWork.TransactionRollback();
             return UserModificationResult.DuplicateValues;
+        }
+
+        public async Task<(UserModificationResult result, User user)> UpdateUser(string email, string newEmail, string newName, string newPassword, string oldPassword)
+        {
+            var user = await userRepository.GetAsync(new UserWithEmailSpec(email));
+            UserModificationResult result = UserModificationResult.NothingToUpdate;
+
+            if (!string.IsNullOrEmpty(newName))
+            {
+                var userWithNameSpec = new UserWithNameSpec(newName);
+                var isEqualToCurrentName = userWithNameSpec.ToExpression().Compile();
+                if (!isEqualToCurrentName(user))
+                {
+                    if (await userRepository.ExistsAsync(userWithNameSpec))
+                    {
+                        return (UserModificationResult.DuplicateValues, null);
+                    }
+                    user.Name = newName;
+                    result = UserModificationResult.SuccessNoConfirmationRequired;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(newPassword))
+            {
+                if (!user.VerifyPassword(oldPassword))
+                {
+                    return (UserModificationResult.IncorrectPassword, null);
+                }
+                user.SetPassword(newPassword);
+                result = UserModificationResult.SuccessNoConfirmationRequired;
+            }
+
+            if (!string.IsNullOrEmpty(newEmail))
+            {
+                var userWithEmailSpec = new UserWithEmailSpec(newEmail);
+                var isEqualToCurrentEmail = userWithEmailSpec.ToExpression().Compile();
+                if (!isEqualToCurrentEmail(user))
+                {
+                    if (await userRepository.ExistsAsync(userWithEmailSpec))
+                    {
+                        return (UserModificationResult.DuplicateValues, null);
+                    }
+                    user.SetEmail(email);
+                    result = UserModificationResult.SuccessConfirmationRequired;
+                }
+            }
+
+            if (result != UserModificationResult.NothingToUpdate)
+            {
+                userRepository.Update(user);
+                await UnitOfWork.SaveAsync();
+            }
+
+            return (result, user);
         }
 
         public async Task<EmailConfirmationResult> ConfirmEmail(string confirmationCode)
@@ -107,6 +168,11 @@ namespace ComicbookStorage.Domain.Services
             return Authorize(email, userAgent, tokenLifeTimeMinutes, user => user.VerifyRefreshToken(userAgent, userRefreshToken));
         }
 
+        public Task<User> GetUserData(string userEmail)
+        {
+            return userRepository.GetAsync(new UserWithEmailSpec(userEmail));
+        }
+
         private async Task<string> Authorize(string email, string userAgent, double tokenLifeTimeMinutes, Func<User, bool> verify)
         {
             var user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
@@ -119,6 +185,15 @@ namespace ComicbookStorage.Domain.Services
             }
 
             return null;
+        }
+
+        private static Specification<User> NotAuthenticatedUser(string userEmail, Specification<User> spec)
+        {
+            if (userEmail != null)
+            {
+                return spec && !new UserWithEmailSpec(userEmail);
+            }
+            return spec;
         }
     }
 }

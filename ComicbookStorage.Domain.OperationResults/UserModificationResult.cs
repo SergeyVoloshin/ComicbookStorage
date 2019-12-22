@@ -3,8 +3,14 @@ namespace ComicbookStorage.Domain.OperationResults
 {
     public enum UserModificationResult
     {
-        Success = 0,
+        NothingToUpdate = 0,
 
-        DuplicateValues = 1
+        SuccessConfirmationRequired,
+
+        SuccessNoConfirmationRequired,
+
+        DuplicateValues,
+
+        IncorrectPassword,
     }
 }

@@ -27,6 +27,7 @@
     <None Remove="ClientApp\src\components\InputField.tsx" />
     <None Remove="ClientApp\src\components\Loading.tsx" />
     <None Remove="ClientApp\src\components\ProgressBar.tsx" />
+    <None Remove="ClientApp\src\containers\AccountInfo.tsx" />
     <None Remove="ClientApp\src\containers\AddComicbook.tsx" />
     <None Remove="ClientApp\src\containers\CheckEmailConfirmationCode.tsx" />
     <None Remove="ClientApp\src\containers\ComicbookList.tsx" />
@@ -40,6 +41,7 @@
     <None Remove="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <None Remove="ClientApp\src\containers\typing\RestoreAccess.tsx" />
     <None Remove="ClientApp\src\index.js" />
+    <None Remove="ClientApp\src\store\accountInfo\thunks.ts" />
     <None Remove="ClientApp\src\store\comicbookList\actions.ts" />
     <None Remove="ClientApp\src\store\comicbookList\reducer.ts" />
     <None Remove="ClientApp\src\store\comicbookList\thunks.ts" />
@@ -84,6 +86,7 @@
     <TypeScriptCompile Include="ClientApp\src\components\ErrorMessage.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\InputField.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Loading.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\containers\AccountInfo.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\AddComicbook.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\ConfirmEmail.tsx" />
     <TypeScriptCompile Include="ClientApp\src\containers\LogIn.tsx" />
@@ -98,6 +101,7 @@
     <TypeScriptCompile Include="ClientApp\src\containers\typing\react-topbar-progress-indicator.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\containers\RestoreAccess.tsx" />
     <TypeScriptCompile Include="ClientApp\src\index.js" />
+    <TypeScriptCompile Include="ClientApp\src\store\accountInfo\thunks.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\actions.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\reducer.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\comicbookList\thunks.ts" />

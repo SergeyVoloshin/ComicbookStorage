@@ -15,6 +15,7 @@ import ConfirmEmail from './containers/ConfirmEmail';
 import RequireAuthenticated from './containers/RequireAuthenticated';
 import RequireUnauthenticated from './containers/RequireUnauthenticated';
 import RestoreAccess from "./containers/RestoreAccess";
+import AccountInfo from "./containers/AccountInfo";
 import AppPathConfig from './utils/appPathConfig';
 
 export default () => (
@@ -31,6 +32,7 @@ export default () => (
             <Route path={AppPathConfig.logOut} component={RequireAuthenticated(LogOut)} />
             <Route path={AppPathConfig.addComicbook} component={RequireAuthenticated(AddComicbook)} />
             <Route path={AppPathConfig.restoreAccess} component={RequireUnauthenticated(RestoreAccess)} />
+            <Route path={AppPathConfig.accountInfo} component={RequireAuthenticated(AccountInfo)} />
         </Layout>
     </div>
 );

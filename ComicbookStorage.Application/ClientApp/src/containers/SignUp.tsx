@@ -101,7 +101,6 @@ const asyncFormValidate = (
     } else {
         return new Promise<boolean>(resolve => resolve());
     }
-
 }
 
 const mapStateToProps = (state: ApplicationState) => {
