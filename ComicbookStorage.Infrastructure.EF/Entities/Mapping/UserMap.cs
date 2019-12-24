@@ -15,13 +15,15 @@ namespace ComicbookStorage.Infrastructure.EF.Entities.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.HasAlternateKey(e => e.Name);
+            builder.HasIndex(e => e.Name)
+                .IsUnique();
 
             builder.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255);
 
-            builder.HasAlternateKey(e => e.Email);
+            builder.HasIndex(e => e.Email)
+                .IsUnique(); 
 
             builder.Property(e => e.Password)
                 .IsRequired()

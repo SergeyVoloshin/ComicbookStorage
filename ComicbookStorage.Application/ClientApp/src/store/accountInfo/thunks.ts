@@ -20,7 +20,7 @@ export const updateUserAsync = (user: UpdatedUser, history: History) => async (d
     let response: Response = await comicbookServer.post('/account/update-user', updatedUserDto, true, true);
 
     if (response.ok) {
-        return dispatch(processUserUpdated(await response.json(), history));
+        return dispatch(processUserUpdated(await response.json(), history, dispatch));
     } else {
         return dispatch(processUpdateUserFailed(await response.json()));
     }

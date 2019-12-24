@@ -71,7 +71,8 @@ namespace ComicbookStorage.Domain.Services
 
         public async Task<(UserModificationResult result, User user)> UpdateUser(string email, string newEmail, string newName, string newPassword, string oldPassword)
         {
-            var user = await userRepository.GetAsync(new UserWithEmailSpec(email));
+            var user = await userRepository.GetEntityAsync(new UserWithEmailSpec(email));
+
             UserModificationResult result = UserModificationResult.NothingToUpdate;
 
             if (!string.IsNullOrEmpty(newName))

@@ -5,11 +5,13 @@ import { ErrorResponse } from '../common/types';
 import messageBox from "../../utils/messageBox";
 import AppPathConfig from "../../utils/appPathConfig";
 import { logOut } from '../logIn/actions';
+import { LogOutReason } from '../logIn/types';
+
 
 export function processUserUpdated(result: UpdatedUserResultDto, history: History, dispatch: Dispatch): UserUpdatedAction {
     if (result.isConfirmationRequired) {
-        history.push(AppPathConfig.confirmEmail);
         dispatch(logOut(LogOutReason.EmailChanged));
+        history.push(AppPathConfig.confirmEmail);
     } else {
         messageBox.showInfo("Your account settings have been successfully updated");
     }
