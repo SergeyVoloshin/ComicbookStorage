@@ -59,8 +59,6 @@ namespace ComicbookStorage.Infrastructure.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.UniqueConstraint("AK_User_Email", x => x.Email);
-                    table.UniqueConstraint("AK_User_Name", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,6 +104,18 @@ Please confirm your email by clicking the link below.<br/>
                 name: "IX_Email_EmailTemplateId",
                 table: "Email",
                 column: "EmailTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Name",
+                table: "User",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

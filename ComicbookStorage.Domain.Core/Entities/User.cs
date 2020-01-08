@@ -80,6 +80,7 @@ namespace ComicbookStorage.Domain.Core.Entities
         public void SetEmail(string email)
         {
             Email = PrepareEmail(email);
+            IsEmailConfirmed = false;
             RefreshToken = null;
             GenerateConfirmationCode();
         }

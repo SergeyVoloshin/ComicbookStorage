@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicbookStorage.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(ComicbookStorageContext))]
-    [Migration("20191224155332_UpdateIndices")]
-    partial class UpdateIndices
+    [Migration("20200108131435_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

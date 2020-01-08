@@ -110,7 +110,7 @@ namespace ComicbookStorage.Domain.Services
                     {
                         return (UserModificationResult.DuplicateValues, null);
                     }
-                    user.SetEmail(email);
+                    user.SetEmail(newEmail);
                     result = UserModificationResult.SuccessConfirmationRequired;
                 }
             }
